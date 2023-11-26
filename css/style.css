@@ -1,0 +1,30 @@
+/*Styling the body*/
+body {
+    margin: 0;
+    background: linear-gradient(to right bottom, rgb(240, 236, 238), rgb(124, 157, 167), rgb(196, 128, 138));
+    min-height: 100vh;
+    font-family: "Roboto", sans-serif;
+}
+
+/*Styling the navigation bar*/
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+.selected {
+    border: 2px solid black;
+}
+
+.round-button {
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 41px;
+    font-size: 14px;
+    justify-content: space-evenly;
+}
