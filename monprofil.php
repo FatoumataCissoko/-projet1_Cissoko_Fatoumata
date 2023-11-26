@@ -1,5 +1,5 @@
 <?php
-include 'connexion.php';
+include 'signup.php';
 
 session_start();
 
@@ -27,7 +27,7 @@ $user = $result->fetch_assoc();
     <p>Nom: <?php echo $user['name']; ?></p>
     <p>Adresse: <?php echo $user['address']; ?></p>
 
-    <a href="edit_profile.php">Modifier le profil</a>
+    <a href="editProfil.php">Modifier le profil</a>
     <br>
     <a href="logout.php">Se déconnecter</a>
 </body>

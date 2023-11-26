@@ -1,5 +1,5 @@
 <?php
-include 'connexion.php';
+include 'signup.php';
 
 session_start();
 if (isset($_SESSION['username'])) {
