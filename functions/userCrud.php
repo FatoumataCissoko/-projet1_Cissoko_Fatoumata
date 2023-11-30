@@ -8,7 +8,7 @@ function createUser(array $data)
 {
     global $conn;
 
-    $query = "INSERT INTO user (user_name, email, pwd) VALUES (?, ?, ?)";
+    $query = "INSERT INTO user (user_name, email, pwd,) VALUES (?, ?, ?)";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
 
@@ -28,6 +28,29 @@ function createUser(array $data)
         }
     }
 }
+
+/**
+ * Delete user
+ */
+
+ function deleteUser(int $id)
+ {
+     global $conn;
+ 
+     $query = "DELETE FROM user WHERE id = ?";
+ 
+     if ($stmt = mysqli_prepare($conn, $query)) {
+ 
+         mysqli_stmt_bind_param($stmt, "i", $id);
+ 
+         /* Exécution de la requête */
+         $result = mysqli_stmt_execute($stmt);
+ 
+         if (!$result) {
+             die("Erreur lors de la suppression de l'utilisateur : " . mysqli_error($conn));
+         }
+     }
+ }
 
 /**
  * Get all users

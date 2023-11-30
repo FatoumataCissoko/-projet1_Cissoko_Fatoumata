@@ -1,3 +1,79 @@
+<?php
+// Inclure le fichier de connexion à la base de données
+include('functions/functions.php');
+
+// Initialiser les variables
+$username = $password = '';
+$username_err = $password_err = $login_err = '';
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    // Valider le nom d'utilisateur
+    if (empty(trim($_POST['username']))) {
+        $username_err = 'Veuillez entrer votre nom d\'utilisateur.';
+    } else {
+        $username = trim($_POST['username']);
+    }
+
+    // Valider le mot de passe
+    if (empty(trim($_POST['password']))) {
+        $password_err = 'Veuillez entrer votre mot de passe.';
+    } else {
+        $password = trim($_POST['password']);
+    }
+    // Vérifier s'il n'y a pas d'erreurs avant de tenter la connexion
+    if (empty($username_err) && empty($password_err)) {
+        // Préparer la requête de sélection
+        $sql = "SELECT `id`, `user_name`, `pwd` FROM user WHERE `user_name` = ?";
+
+        if ($stmt = mysqli_prepare($conn, $sql)) {
+            var_dump($_POST);
+
+            mysqli_stmt_bind_param($stmt, 's', $username);
+            var_dump($stmt);
+            // Exécuter la requête préparée
+            if (mysqli_stmt_execute($stmt)) {
+                // Stocker le résultat
+                mysqli_stmt_store_result($stmt);
+                var_dump($stmt);
+                // Vérifier si le nom d'utilisateur existe, puis vérifier le mot de passe
+                if (mysqli_stmt_num_rows($stmt) == 1) {
+                    var_dump($stmt);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    if (mysqli_stmt_fetch($stmt)) {
+                        if (password_verify($password, $hashed_password)) {
+                            // Authentification réussie, démarrer une nouvelle session
+                            session_start();
+
+                            // Stocker les données dans les variables de session
+                            $_SESSION['id'] = $id;
+                            $_SESSION['username'] = $username;
+
+                            // Rediriger vers la page d'accueil ou autre page après la connexion réussie
+                            header('location: index.php');
+                        } else {
+                            $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                        }
+                    }
+                } else {
+                    $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                }
+            } else {
+                echo 'Erreur! Veuillez réessayer plus tard.';
+            }
+
+            // Fermer la déclaration
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    // Fermer la connexion
+    mysqli_close($conn);
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,4 +168,9 @@
 
             <input type="submit" value="Se connecter">
             <p><?php echo $login_err; ?></p>
-            <p>Vous n'avez pas de compte? <a href="register.php">Inscr
+            <p>Vous n'avez pas de compte? <a href="registre.php">Inscription</a></p>
+        </form>
+    </div>
+</body>
+</html>
+

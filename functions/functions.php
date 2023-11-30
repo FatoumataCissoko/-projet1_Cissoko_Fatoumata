@@ -42,7 +42,7 @@ function connectToDatabase() {
     $DB_SERVER = 'localhost';
     $DB_USERNAME = 'root';
     $DB_PASSWORD = '';
-    $DB_NAME = 'ecom1_project';
+    $DB_NAME = 'ecom1_projet';
 
     // Connexion à la base de données
     $conn = new mysqli($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
