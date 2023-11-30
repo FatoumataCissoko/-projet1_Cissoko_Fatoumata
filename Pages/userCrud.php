@@ -7,11 +7,11 @@
 function createUser(array $data)
 {
     global $conn;
-    
-    $query = "INSERT INTO user VALUES (NULL, ?, ?, ?)";
+
+    $query = "INSERT INTO user (user_name, email, pwd) VALUES (?, ?, ?)";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
-        
+
         mysqli_stmt_bind_param(
             $stmt,
             "sss",
@@ -22,8 +22,13 @@ function createUser(array $data)
 
         /* Exécution de la requête */
         $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            die("Erreur lors de l'ajout de l'utilisateur : " . mysqli_error($conn));
+        }
     }
 }
+
 /**
  * Get all users
  */
@@ -41,32 +46,52 @@ function getAllUsers()
 
     return $data;
 }
+
 /**
  * Get user by id
  */
 
- //Todo: edit to prepare
+//Todo: edit to prepare
 function getUserById(int $id)
 {
     global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM user WHERE id = " . $id);
 
-    $data = mysqli_fetch_assoc($result);
+    $query = "SELECT * FROM user WHERE id = ?";
 
-    return $data;
+    if ($stmt = mysqli_prepare($conn, $query)) {
+
+        mysqli_stmt_bind_param($stmt, "i", $id);
+
+        /* Exécution de la requête */
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        $data = mysqli_fetch_assoc($result);
+
+        return $data;
+    }
 }
 
 function getUserByName(string $user_name)
 {
     global $conn;
 
-    $query = "SELECT * FROM user WHERE user.user_name = '" . $user_name . "';";
+    $query = "SELECT * FROM user WHERE user_name = ?";
 
-    $result = mysqli_query($conn, $query);
+    if ($stmt = mysqli_prepare($conn, $query)) {
 
-    // avec fetch row : tableau indexé
-    $data = mysqli_fetch_assoc($result);
-    return $data;
+        mysqli_stmt_bind_param($stmt, "s", $user_name);
+
+        /* Exécution de la requête */
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        // avec fetch row : tableau indexé
+        $data = mysqli_fetch_assoc($result);
+        return $data;
+    }
 }
 
 /**
@@ -76,43 +101,34 @@ function updateUser(array $data)
 {
     global $conn;
 
-    $query = "UPDATE user SET user_name = ?, email = ?, pwd = ?
-            WHERE user.id = ?;";
+    $query = "UPDATE user SET user_name = ?, email = ?, pwd , addresse=? date_naissance=?, roleU=? WHERE id=?";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
 
-        mysqli_stmt_bind_param(
-            $stmt,
-            "sssi",
-            $data['user_name'],
-            $data['email'],
-            $data['pwd'],
-            $data['id'],
-        );
+        $stmt->bind_param("sssssssi", $nom, $prenom, $email, $addresse, $date_naissance, $roleU, $id);
 
         /* Exécution de la requête */
         $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            die("Erreur lors de la mise à jour de l'utilisateur : " . mysqli_error($conn));
+        }
     }
 }
+
+
+
 /**
- * Delete user
+ * Validate user_name (minimum 2 caractères, maximum 50 caractères)
  */
-function deleteUser(int $id)
+function validateUserName(string $user_name)
 {
-    global $conn;
+    $user_name = trim($user_name);
 
-    $query = "DELETE FROM user
-                WHERE user.id = ?;";
-
-    if ($stmt = mysqli_prepare($conn, $query)) {
-
-        mysqli_stmt_bind_param(
-            $stmt,
-            "i",
-            $id,
-        );
-
-        /* Exécution de la requête */
-        $result = mysqli_stmt_execute($stmt);
+    if (strlen($user_name) < 2 || strlen($user_name) > 50) {
+        return false;
     }
+
+    return true;
 }
+?>
