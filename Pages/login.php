@@ -1,6 +1,7 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-include('./functions/functions.php');
+include('../functions/functions.php');
+include('../functions/userCrud.php');
 
 // Initialiser les variables
 $username = $password = '';
@@ -80,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Connexion</title>
     <style>
         body {
@@ -173,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <!-- Inclure le formulaire de connexion -->
-    <?php include('./pageAccueil/Entete.php'); ?>
+    <?php include('../Pages/login.php'); ?>
 
 </body>
 </html>

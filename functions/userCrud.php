@@ -15,10 +15,16 @@ function createUser(array $data)
 
         mysqli_stmt_bind_param(
             $stmt,
-            "sss",
+            "ssssssssi",
             $data['user_name'],
             $data['email'],
-            $data['pwd']
+            $data['pwd'],
+            $data['fname'],
+            $data['lname'],
+            $data['billing_address_id'],
+            $data['shipping_address_id'],
+            $data['token'],
+            $data['role_id']
         );
 
         /* Exécution de la requête */

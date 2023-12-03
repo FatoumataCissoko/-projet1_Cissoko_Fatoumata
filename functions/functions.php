@@ -1,6 +1,7 @@
 <?php
+
 //Function pour s'enregistrer
-function validateRegistration($username, $password, $confirm_password, $date_of_birth) {
+function validateRegistration ($username, $password, $confirm_password, $date_of_birth){
     $errors = [];
 
     // Validation du nom d'utilisateur
@@ -41,7 +42,7 @@ function connectToDatabase() {
     // Paramètres de connexion à la base de données
     $DB_SERVER = 'localhost';
     $DB_USERNAME = "root";
-    $DB_PASSWORD = '';
+    $DB_PASSWORD = "";
     $DB_NAME = "ecom1_projet";
 
     // Connexion à la base de données
@@ -62,9 +63,4 @@ $databaseConnection = connectToDatabase();
 // Assurez-vous de fermer la connexion lorsque vous avez fini de l'utiliser.
 // $databaseConnection->close();
 
-
-
 ?>
-
-
-
