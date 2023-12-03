@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-include('functions/functions.php');
+include('./functions/functions.php');
 
 // Initialiser les variables
 $username = $password = '';
@@ -171,6 +171,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Vous n'avez pas de compte? <a href="registre.php">Inscription</a></p>
         </form>
     </div>
+
+    <!-- Inclure le formulaire de connexion -->
+    <?php include('./pageAccueil/Entete.php'); ?>
+
 </body>
 </html>
 

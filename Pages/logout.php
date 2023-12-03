@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de configuration de la base de données et d'autres fichiers nécessaires
-include('functions.php');
+include('../functions/functions.php');
 
 // Démarrer la session
 session_start();

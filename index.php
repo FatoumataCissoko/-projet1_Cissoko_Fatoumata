@@ -1,60 +1,63 @@
 <?php
-// Inclure le fichier de configuration de la base de données et d'autres fichiers nécessaires
-include('config.php');
-
-// Commencer la session (pour vérifier si l'utilisateur est connecté, etc.)
-session_start();
+// Inclusion du fichier d'en-tête
+include "pageAccueil/Entete.php";
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <title>Accueil - Plateforme E-commerce pour Chaussures</title>
-    <!-- Vous pouvez inclure ici des liens vers des fichiers CSS, des scripts, etc. -->
-</head>
-<body>
+<main>
+    <!-- Section de la bannière -->
+    <section class="banner">
+        <h2><span class="secondWord" style="font-size: larger;">Chaussures Fashion</span></h2>
+        <hr>
+    </section>
 
-    <header>
-        <h1>Plateforme E-commerce pour Chaussures</h1>
-        <!-- Ajouter d'autres éléments d'en-tête si nécessaire -->
-    </header>
+    <!-- Image d'accueil -->
+    <div class="welcomeImg">
+        <img src="images/site/mag3.png" alt="chaussures" class="img-fluid">
+    </div>
 
-    <nav>
-        <!-- Ajouter la navigation, liens vers d'autres pages, etc. -->
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="browse_products.php">Parcourir les Produits</a></li>
-            <li><a href="cart.php">Panier</a></li>
-            <?php
-            // Afficher des liens différents pour les utilisateurs connectés et les administrateurs
-            if (isset($_SESSION['id'])) {
-                echo '<li><a href="monprofile.php">Mon Profil</a></li>';
-                echo '<li><a href="logout.php">Déconnexion</a></li>';
-            } else {
-                echo '<li><a href="login.php">Connexion</a></li>';
-                echo '<li><a href="registre.php">Inscription</a></li>';
-            }
+    <!-- Paragraphes aléatoires sur les chaussures -->
+    <div class="quotes">
+        <span class="paragraphe">
+            "Le style commence par de bonnes chaussures.Le bonheur ne s'acquiert pas, il ne réside pas dans les apparences, chacun d'entre nous le construit à chaque instant de sa vie avec son coeur." - <NAME>, <span class="text-danger">Proverbe Africain</span>
+                <br />
+                <br />
+                "Chaque pas compte. Faites en sorte qu'ils soient élégants." – <NAME>, <span class="text-warning">Directeur de la mode</span>
+        </span>
+        <br />
+        <br />
+        <span class="paragraphe">Trouvez la paire de chaussures parfaite pour chaque occasion chez Chaussures Fashion.</span>
+    </div>
 
-            // Afficher des liens d'administration pour les administrateurs
-            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-                echo '<li><a href="admin/">Administration</a></li>';
-            }
-            ?>
-        </ul>
-    </nav>
+    <!-- Cartes de produits -->
+    <div class="cardcontainer">
+        <div class="card" style="width: 18rem; background-color: lightpink;">
+            <div class="card-body">
+                <h5 class="card-title">Baskets</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">#Tendance</h6>
+                <p class="card-text">
+                    Des baskets confortables et élégantes pour vos journées décontractées. Découvrez notre collection dès maintenant.
+                </p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem; background-color: lightblue;">
+            <div class="card-body">
+                <h5 class="card-title">Escarpins</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">#Élégance</h6>
+                <p class="card-text">
+                    Les escarpins parfaits pour ajouter une touche d'élégance à votre tenue. Explorez nos styles variés.
+                </p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem; background-color: lightgreen;">
+            <div class="card-body">
+                <h5 class="card-title">Bottes</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">#Hiver</h6>
+                <p class="card-text">
+                    Restez au chaud avec nos bottes tendance. Idéales pour les journées fraîches d'hiver.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
 
-    <main>
-        <h2>Nouveaux Produits</h2>
-        <!-- Ajouter ici la logique pour afficher les nouveaux produits -->
-        <!-- Vous pouvez utiliser des boucles pour afficher plusieurs produits -->
-    </main>
-
-    <footer>
-        <!-- Ajouter le pied de page si nécessaire -->
-    </footer>
-
-</body>
-</html>
+<?php include "../Pages/footer.php" ?>

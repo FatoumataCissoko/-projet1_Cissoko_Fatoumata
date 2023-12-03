@@ -11,7 +11,7 @@
 
     <?php
     // Inclure le fichier des fonctions
-    require_once 'functions/functions.php';
+    require_once './functions/functions.php';
 
     // Initialiser les variables
     $username = $password = $confirm_password = $date_of_birth = "";
@@ -104,7 +104,7 @@
     </form>
 
     <!-- Lien vers la page de connexion -->
-    <p>Vous avez déjà un compte ? <a href="/Pages/login.php">Connectez-vous ici</a></p>
+    <p>Vous avez déjà un compte ? <a href="Pages/login.php">Connectez-vous ici</a></p>
 
 </body>
 
