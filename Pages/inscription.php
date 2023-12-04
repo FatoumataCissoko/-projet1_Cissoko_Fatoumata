@@ -4,19 +4,19 @@ require_once '../functions/functions.php';
 require_once '../functions/userCrud.php';
 
 // Initialiser les variables
-$username = $date_of_birth = $password = $confirm_password = "";
+$username = $email = $password = $confirm_password = "";
 $errors = [];
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire et les traiter
     $username = htmlspecialchars($_POST["username"]);
-    $date_of_birth = htmlspecialchars($_POST["date_of_birth"]);
+    $email = htmlspecialchars($_POST["email"]);
     $password = htmlspecialchars($_POST["password"]);
     $confirm_password = htmlspecialchars($_POST["confirm_password"]);
 
     // Validation des données en utilisant la fonction externe
-    $errors = validateRegistration($username, $password, $confirm_password, $date_of_birth);
+    $errors = validateRegistration($username, $password, $confirm_password, $email);
 
     // Vérifier s'il n'y a pas d'erreurs avant de traiter les données
     if (empty($errors)) {
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Préparer la requête d'insertion
-        $stmt = $conn->prepare("INSERT INTO user (user_name, date_of_birth, pwd) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO user (user_name, email, pwd) VALUES (?, ?, ?)");
 
         // Vérifier si la préparation de la requête a échoué
         if ($stmt === false) {
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Lier les paramètres à la requête
-        $stmt->bind_param("sss", $username, $date_of_birth, $hashed_password);
+        $stmt->bind_param("sss", $username, $email, $hashed_password);
 
         // Vérifier si la liaison des paramètres a échoué
         if ($stmt === false) {
@@ -147,9 +147,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="username" id="username" value="<?php echo $username; ?>">
         <span><?php echo $errors['username'] ?? ''; ?></span><br>
 
-        <label for="date_of_birth">Date de naissance:</label>
-        <input type="date" name="date_of_birth" id="date_of_birth" value="<?php echo $date_of_birth; ?>">
-        <span><?php echo $errors['date_of_birth'] ?? ''; ?></span><br>
+        <label for="email">E-mail :</label>
+        <input type="email" name="email" id="email" value="<?php echo $email; ?>">
+        <span><?php echo $errors['email'] ?? ''; ?></span><br>
 
         <label for="password">Mot de passe:</label>
         <input type="password" name="password" id="password" value="<?php echo $password; ?>">

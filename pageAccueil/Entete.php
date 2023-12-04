@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de fonctions
-include './functions/functions.php';
+include '../functions/functions.php';
 ?>
 
 <!-- Header et section de navigation -->
@@ -31,10 +31,10 @@ include './functions/functions.php';
                             </span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Products.php">Boutique</a>
+                        <a class="nav-link active" href="#">Boutique</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="myProfile.php">Mon Profil</a>
+                        <a class="nav-link active" href="../Pages/monprofil.php">Mon Profil</a>
                     </li>
                     <li class="nav-item">
                         <a href="myCart.php" class="btn btn-primary">
@@ -47,7 +47,7 @@ include './functions/functions.php';
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Gérer les Produits</a></li>
+                                <li><a class="dropdown-item" href="../Pages/addProduit.php">Gérer les Produits</a></li>
                                 <li><a class="dropdown-item" href="#">Utilisateurs</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -58,7 +58,7 @@ include './functions/functions.php';
                     <?php } ?>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./Pages/login.php">Se connecter</a>
+                        <a class="nav-link active" href="../Pages/login.php">Se connecter</a>
                     </li>
 
                 <?php } ?>

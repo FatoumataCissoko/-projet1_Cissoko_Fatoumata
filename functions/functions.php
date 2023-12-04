@@ -1,7 +1,8 @@
 <?php
 
 //Function pour s'enregistrer
-function validateRegistration ($username, $password, $confirm_password, $date_of_birth){
+function validateRegistration($username, $email, $password, $confirm_password,)
+{
     $errors = [];
 
     // Validation du nom d'utilisateur
@@ -23,22 +24,20 @@ function validateRegistration ($username, $password, $confirm_password, $date_of
         }
     }
 
-    // Validation de la date de naissance
-    if (empty($date_of_birth)) {
-        $errors['date_of_birth'] = "Veuillez saisir votre date de naissance.";
-    } else {
-        $date_obj = DateTime::createFromFormat('Y-m-d', $date_of_birth);
-
-        if (!$date_obj || $date_obj->format('Y-m-d') !== $date_of_birth) {
-            $errors['date_of_birth'] = "La date de naissance n'est pas valide.";
-        }
+    // Validation de l'e-mail
+    if (empty($email)) {
+        $errors['email'] = "Veuillez saisir votre adresse e-mail.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "L'adresse e-mail n'est pas valide.";
     }
+
 
     return $errors;
 }
 
 //Function pour ma BD
-function connectToDatabase() {
+function connectToDatabase()
+{
     // Paramètres de connexion à la base de données
     $DB_SERVER = 'localhost';
     $DB_USERNAME = "root";
@@ -63,4 +62,23 @@ $databaseConnection = connectToDatabase();
 // Assurez-vous de fermer la connexion lorsque vous avez fini de l'utiliser.
 // $databaseConnection->close();
 
+//---------------------------------------Produits----------------------------------------------
+
+
+// Function getallproducts
+function getAllProducts()
+{
+    $conn = connectToDatabase(); 
+    $sql = "SELECT p.id, p.nom, p.description, p.prix, p.taille, p.quantite, i.chemin 
+            FROM product p 
+            JOIN Images i ON p.id = i.id_product; ";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $resultats = $stmt->get_result();
+    $products = array();
+    foreach ($resultats as $product) {
+        $products[] = $product;
+    }
+    return $products;
+}
 ?>

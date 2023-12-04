@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <input type="submit" value="Se connecter">
             <p><?php echo $login_err; ?></p>
-            <p>Vous n'avez pas de compte? <a href="registre.php">Inscription</a></p>
+            <p>Vous n'avez pas de compte? <a href="inscription.php">Inscription</a></p>
         </form>
     </div>
 
