@@ -9,7 +9,7 @@
               <h4> Gérer les produits</h4>
             <hr>
             <div class="mb-3">
-              <a href="addProduct.php" class="btn btn-success">Ajouter un nouveau produit</a>
+              <a href="addProduit.php" class="btn btn-success">Ajouter un nouveau produit</a>
             </div>
             <table class="table">
               <thead>
@@ -20,7 +20,7 @@
                   <th scope="col">Price</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Description de l'article</th>
-                  <th scope="col">Actions</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -29,9 +29,8 @@
                     <th scope="row"><?php echo $product['id']; ?></th>
                     <th scope="row"><img src="<?php echo $product['chemin']; ?>" width="50" height="50" alt=""></th>
                     <td><?php echo $product['nom']; ?></td>
-                    <td><?php echo $product['quantite']; ?></td>
-                    <td><?php echo $product['prix']; ?></td>
-                    <td><?php echo $product['taille']; ?></td>                
+                    <td><?php echo $product['quantity']; ?></td>
+                    <td><?php echo $product['price']; ?></td>               
                     <td><?php echo $product['description']; ?></td>
                     <td>
                       <a href="./modifyProduct.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">

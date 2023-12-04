@@ -60,4 +60,6 @@ include "pageAccueil/Entete.php";
     </div>
 </main>
 
-<?php include "../Pages/footer.php" ?>
+<?php 
+include "./footer.php"; 
+?>

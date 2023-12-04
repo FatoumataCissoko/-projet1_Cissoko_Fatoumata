@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (mysqli_stmt_execute($update_stmt)) {
             // Rediriger vers la page de profil après la mise à jour réussie
-            header('Location: profile.php');
+            header('Location: monprofile.php');
         } else {
             echo 'Erreur lors de la mise à jour du profil. Veuillez réessayer.';
         }

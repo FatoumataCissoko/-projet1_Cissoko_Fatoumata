@@ -1,7 +1,7 @@
 <?php
 // Inclure le fichier des fonctions
 require_once '../functions/functions.php';
-require_once '../functions/userCrud.php';
+//require_once '../functions/userCrud.php';
 
 // Initialiser les variables
 $username = $email = $password = $confirm_password = "";
@@ -17,14 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validation des données en utilisant la fonction externe
     $errors = validateRegistration($username, $password, $confirm_password, $email);
-
     // Vérifier s'il n'y a pas d'erreurs avant de traiter les données
     if (empty($errors)) {
         // Traitement des données
+
         $conn = connectToDatabase();
 
         // Hasher le mot de passe avant de l'enregistrer
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = password_hash($password, 'PASSWORD_DEFAULT');
 
         // Préparer la requête d'insertion
         $stmt = $conn->prepare("INSERT INTO user (user_name, email, pwd) VALUES (?, ?, ?)");
@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enregistrement</title>
     <style>
-        
         body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
@@ -140,32 +139,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-<div class="login-container">
+    <div class="login-container">
         <h2>Formulaire d'enregistrement</h2>
-    <form action="" method="post">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" name="username" id="username" value="<?php echo $username; ?>">
-        <span><?php echo $errors['username'] ?? ''; ?></span><br>
+        <form action="" method="post">
+            <div>
+                <label for="username">Nom d'utilisateur:</label>
+                <input type="text" name="username" id="username" value="<?php echo $username; ?>">
+                <span><?php echo $errors['username'] ?? ''; ?></span><br>
+            </div>
+            <div>
+            <label for="email">E-mail :</label>
+            <input type="email" name="email" id="email" value="<?php echo $email; ?>">
+            <span><?php echo $errors['email'] ?? ''; ?></span><br>
+            </div>
+            <div>
+            <label for="password">Mot de passe:</label>
+            <input type="password" name="password" id="password" value="<?php echo $password; ?>">
+            <span><?php echo $errors['password'] ?? ''; ?></span><br>
+            </div>
+            <div>
+            <label for="confirm_password">Confirmer le mot de passe:</label>
+            <input type="password" name="confirm_password" id="confirm_password" value="<?php echo $confirm_password; ?>">
+            <span><?php echo $errors['confirm_password'] ?? ''; ?></span>
+            </div>
+            <br>
+            <div class="d-grid gap-2">
+            <button type="submit" name="S'inscrire" class="btn btn-primary">S'enregistrer</button>
+            </div>
+            <!-- Lien vers la page de connexion -->
+            <label class="form-check-label" >Vous avez déjà un compte ?</label> <a href="login.php">Connectez-vous ici</a>
+        </form>
+    </div>
 
-        <label for="email">E-mail :</label>
-        <input type="email" name="email" id="email" value="<?php echo $email; ?>">
-        <span><?php echo $errors['email'] ?? ''; ?></span><br>
-
-        <label for="password">Mot de passe:</label>
-        <input type="password" name="password" id="password" value="<?php echo $password; ?>">
-        <span><?php echo $errors['password'] ?? ''; ?></span><br>
-
-        <label for="confirm_password">Confirmer le mot de passe:</label>
-        <input type="password" name="confirm_password" id="confirm_password" value="<?php echo $confirm_password; ?>">
-        <span><?php echo $errors['confirm_password'] ?? ''; ?></span><br>
-
-        <input type="submit" value="S'inscrire">
-
-        <!-- Lien vers la page de connexion -->
-    <p>Vous avez déjà un compte ? <a href="../Pages/login.php">Connectez-vous ici</a></p>
-    </form>
-</div>
-    
 
 </body>
 

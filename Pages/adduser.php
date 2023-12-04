@@ -47,7 +47,7 @@ $users = getAllUsers();
                                         </td>
                                         <td>
                                             <a href="editUser.php?id=<?php echo $user['id']; ?>"
-                                                class="btn btn-info btn-sm">Edit</a>
+                                                class="btn btn-info btn-sm">Modifier</a>
                                             <a href="deleteUser.php?id=<?php echo $user['id']; ?>"
                                                 class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill">
                                                 </i></a>

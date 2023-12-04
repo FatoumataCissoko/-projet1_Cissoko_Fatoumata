@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de fonctions
-include '../functions/functions.php';
+include './functions/functions.php';
 ?>
 
 <!-- Header et section de navigation -->
@@ -34,7 +34,7 @@ include '../functions/functions.php';
                         <a class="nav-link active" href="#">Boutique</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="../Pages/monprofil.php">Mon Profil</a>
+                        <a class="nav-link active" href="monprofil.php">Mon Profil</a>
                     </li>
                     <li class="nav-item">
                         <a href="myCart.php" class="btn btn-primary">
@@ -58,7 +58,7 @@ include '../functions/functions.php';
                     <?php } ?>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <a class="nav-link active" href="../Pages/login.php">Se connecter</a>
+                        <a class="nav-link active" href="login.php">Se connecter</a>
                     </li>
 
                 <?php } ?>

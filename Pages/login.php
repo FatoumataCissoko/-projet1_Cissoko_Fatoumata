@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Préparer la requête de sélection
         $sql = "SELECT `id`, `user_name`, `pwd` FROM user WHERE `user_name` = ?";
 
-        if ($stmt = mysqli_prepare($conn, $sql)) {
+        if ($stmt = mysqli_prepare($databaseConnection, $sql)) {
             var_dump($_POST);
 
             mysqli_stmt_bind_param($stmt, 's', $username);
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $_SESSION['username'] = $username;
 
                             // Rediriger vers la page d'accueil ou autre page après la connexion réussie
-                            header('location: index.php');
+                            header('location: Entete.php');
                         } else {
                             $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
                         }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Fermer la connexion
-    mysqli_close($conn);
+    mysqli_close($databaseConnection);
 }
 ?>
 
@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
     <title>Connexion</title>
     <style>
         body {
@@ -168,14 +167,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="password" name="password" value="<?php echo $password; ?>">
             <span><?php echo $password_err; ?></span>
 
-            <input type="submit" value="Se connecter">
+            <div class="d-grid gap-2">
+                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous</button>
+            </div>
+            
             <p><?php echo $login_err; ?></p>
             <p>Vous n'avez pas de compte? <a href="inscription.php">Inscription</a></p>
+
+            
         </form>
     </div>
 
     <!-- Inclure le formulaire de connexion -->
-    <?php include('../Pages/login.php'); ?>
+    
 
 </body>
 </html>
