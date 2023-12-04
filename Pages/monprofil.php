@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-include('config.php');
+include('../functions/functions.php');
 
 // Vérifier si l'utilisateur est connecté
 session_start();
