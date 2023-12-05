@@ -1,8 +1,6 @@
 <?php
 // Inclure le fichier de connexion à la base de données
 include('../functions/functions.php');
-include('../functions/userCrud.php');
-
 // Initialiser les variables
 $username = $password = '';
 $username_err = $password_err = $login_err = '';
@@ -73,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_close($databaseConnection);
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -170,17 +167,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="d-grid gap-2">
                     <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous</button>
             </div>
-            
+
             <p><?php echo $login_err; ?></p>
             <p>Vous n'avez pas de compte? <a href="inscription.php">Inscription</a></p>
-
-            
         </form>
     </div>
 
-    <!-- Inclure le formulaire de connexion -->
-    
-
 </body>
-</html>
 
+</html>

@@ -1,61 +1,68 @@
 <?php
-// Inclure le fichier des fonctions
-require_once '../functions/functions.php';
-//require_once '../functions/userCrud.php';
+// Inclure le fichier de connexion à la base de données
+include '../functions/functions.php';
 
 // Initialiser les variables
-$username = $email = $password = $confirm_password = "";
-$errors = [];
+$username = $email = $password = "";
+$usernameErr = $emailErr = $passwordErr = "";
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les données du formulaire et les traiter
-    $username = htmlspecialchars($_POST["username"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $password = htmlspecialchars($_POST["password"]);
-    $confirm_password = htmlspecialchars($_POST["confirm_password"]);
+    // Validation du nom d'utilisateur
+    if (empty($_POST["username"])) {
+        $usernameErr = "Le nom d'utilisateur est requis";
+    } else {
+        $username = test_input($_POST["username"]);
+    }
 
-    // Validation des données en utilisant la fonction externe
-    $errors = validateRegistration($username, $password, $confirm_password, $email);
-    // Vérifier s'il n'y a pas d'erreurs avant de traiter les données
-    if (empty($errors)) {
-        // Traitement des données
-
-        $conn = connectToDatabase();
-
-        // Hasher le mot de passe avant de l'enregistrer
-        $hashed_password = password_hash($password, 'PASSWORD_DEFAULT');
-
-        // Préparer la requête d'insertion
-        $stmt = $conn->prepare("INSERT INTO user (user_name, email, pwd) VALUES (?, ?, ?)");
-
-        // Vérifier si la préparation de la requête a échoué
-        if ($stmt === false) {
-            die("Échec de la préparation de la requête : " . $conn->error);
+    // Validation de l'e-mail
+    if (empty($_POST["email"])) {
+        $emailErr = "L'e-mail est requis";
+    } else {
+        $email = test_input($_POST["email"]);
+        // Vérifier si l'e-mail est bien formaté
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Format d'e-mail invalide";
         }
+    }
 
-        // Lier les paramètres à la requête
-        $stmt->bind_param("sss", $username, $email, $hashed_password);
+    // Validation du mot de passe
+    if (empty($_POST["password"])) {
+        $passwordErr = "Le mot de passe est requis";
+    } else {
+        $password = test_input($_POST["password"]);
+    }
 
-        // Vérifier si la liaison des paramètres a échoué
-        if ($stmt === false) {
-            die("Échec de la liaison des paramètres : " . $stmt->error);
-        }
+    // Si toutes les validations sont réussies, insérer les données dans la base de données
+    if (empty($usernameErr) && empty($emailErr) && empty($passwordErr)) {
+        // Hasher le mot de passe avant de l'insérer dans la base de données
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Créer la requête SQL pour l'insertion
+        $query = "INSERT INTO `user` (`user_name`, `email`, `pwd`, `role_id`) 
+                  VALUES ('$username', '$email', '$hashed_password', (SELECT `id` FROM `role` WHERE `name` = 'client'))";
 
         // Exécuter la requête
-        if ($stmt->execute()) {
-            echo "Enregistrement réussi!";
+        if (mysqli_query($databaseConnection, $query)) {
+            echo "Inscription réussie!";
         } else {
-            echo "Erreur lors de l'enregistrement : " . $stmt->error;
+            echo "Erreur d'inscription: " . mysqli_error($conn);
         }
-
-        // Fermer la connexion et la déclaration
-        $stmt->close();
-        $conn->close();
     }
 }
-?>
 
+// Fonction de nettoyage des données
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+// Fermer la connexion à la base de données
+mysqli_close($databaseConnection);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enregistrement</title>
+    <title>Inscription</title>
+
     <style>
         body {
             background-color: #f2f2f2;
@@ -135,43 +143,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: underline;
         }
     </style>
-
 </head>
 
 <body>
-    <div class="login-container">
-        <h2>Formulaire d'enregistrement</h2>
-        <form action="" method="post">
-            <div>
-                <label for="username">Nom d'utilisateur:</label>
-                <input type="text" name="username" id="username" value="<?php echo $username; ?>">
-                <span><?php echo $errors['username'] ?? ''; ?></span><br>
-            </div>
-            <div>
-            <label for="email">E-mail :</label>
-            <input type="email" name="email" id="email" value="<?php echo $email; ?>">
-            <span><?php echo $errors['email'] ?? ''; ?></span><br>
-            </div>
-            <div>
-            <label for="password">Mot de passe:</label>
-            <input type="password" name="password" id="password" value="<?php echo $password; ?>">
-            <span><?php echo $errors['password'] ?? ''; ?></span><br>
-            </div>
-            <div>
-            <label for="confirm_password">Confirmer le mot de passe:</label>
-            <input type="password" name="confirm_password" id="confirm_password" value="<?php echo $confirm_password; ?>">
-            <span><?php echo $errors['confirm_password'] ?? ''; ?></span>
-            </div>
-            <br>
-            <div class="d-grid gap-2">
-            <button type="submit" name="S'inscrire" class="btn btn-primary">S'enregistrer</button>
-            </div>
-            <!-- Lien vers la page de connexion -->
-            <label class="form-check-label" >Vous avez déjà un compte ?</label> <a href="login.php">Connectez-vous ici</a>
-        </form>
-    </div>
+    <h2>Inscription</h2>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <label for="username">Nom d'utilisateur:</label>
+        <input type="text" name="username" id="username">
+        <span class="error"><?php echo $usernameErr; ?></span>
+        <br>
 
+        <label for="email">E-mail:</label>
+        <input type="text" name="email" id="email">
+        <span class="error"><?php echo $emailErr; ?></span>
+        <br>
 
+        <label for="password">Mot de passe:</label>
+        <input type="password" name="password" id="password">
+        <span class="error"><?php echo $passwordErr; ?></span>
+        <br>
+
+        <input type="submit" value="S'inscrire">
+    </form>
 </body>
 
 </html>
