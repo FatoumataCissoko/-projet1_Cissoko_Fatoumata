@@ -3,50 +3,55 @@
 include '../functions/functions.php';
 
 // Initialiser les variables
-$username = $email = $password = "";
-$usernameErr = $emailErr = $passwordErr = "";
+$user_name = $email = $pwd = $street_name = $street_nb = $city = $country = "";
+$user_name_err = $email_err = $pwd_err = $street_name_err = $street_nb_err = $city_err = $country_err = "";
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validation du nom d'utilisateur
-    if (empty($_POST["username"])) {
-        $usernameErr = "Le nom d'utilisateur est requis";
+    if (empty($_POST["user_name"])) {
+        $user_name_err = "Le nom d'utilisateur est requis";
     } else {
-        $username = test_input($_POST["username"]);
+        $user_name = test_input($_POST["user_name"]);
     }
 
     // Validation de l'e-mail
     if (empty($_POST["email"])) {
-        $emailErr = "L'e-mail est requis";
+        $email_err = "L'e-mail est requis";
     } else {
         $email = test_input($_POST["email"]);
         // Vérifier si l'e-mail est bien formaté
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Format d'e-mail invalide";
+            $email_err = "Format d'e-mail invalide";
         }
     }
 
     // Validation du mot de passe
-    if (empty($_POST["password"])) {
-        $passwordErr = "Le mot de passe est requis";
+    if (empty($_POST["pwd"])) {
+        $pwd_err = "Le mot de passe est requis";
     } else {
-        $password = test_input($_POST["password"]);
+        $pwd = test_input($_POST["pwd"]);
     }
 
+    // Validation des champs d'adresse (ajoutés)
+    $street_name = test_input($_POST["street_name"]);
+    $street_nb = test_input($_POST["street_nb"]);
+    $city = test_input($_POST["city"]);
+
     // Si toutes les validations sont réussies, insérer les données dans la base de données
-    if (empty($usernameErr) && empty($emailErr) && empty($passwordErr)) {
+    if (empty($user_name_err) && empty($email_err) && empty($pwd_err)) {
         // Hasher le mot de passe avant de l'insérer dans la base de données
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
 
         // Créer la requête SQL pour l'insertion
         $query = "INSERT INTO `user` (`user_name`, `email`, `pwd`, `role_id`) 
-                  VALUES ('$username', '$email', '$hashed_password', (SELECT `id` FROM `role` WHERE `name` = 'client'))";
+                  VALUES ('$user_name', '$email', '$hashed_pwd', (SELECT `id` FROM `role` WHERE `name` = 'client'))";
 
         // Exécuter la requête
         if (mysqli_query($databaseConnection, $query)) {
             echo "Inscription réussie!";
         } else {
-            echo "Erreur d'inscription: " . mysqli_error($conn);
+            echo "Erreur d'inscription: " . mysqli_error($databaseConnection);
         }
     }
 }
@@ -65,7 +70,7 @@ mysqli_close($databaseConnection);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -146,25 +151,37 @@ mysqli_close($databaseConnection);
 </head>
 
 <body>
-    <h2>Inscription</h2>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" name="username" id="username">
-        <span class="error"><?php echo $usernameErr; ?></span>
-        <br>
+    <div class="login-container">
+        <h2>Inscription</h2>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-        <label for="email">E-mail:</label>
-        <input type="text" name="email" id="email">
-        <span class="error"><?php echo $emailErr; ?></span>
-        <br>
-
-        <label for="password">Mot de passe:</label>
-        <input type="password" name="password" id="password">
-        <span class="error"><?php echo $passwordErr; ?></span>
-        <br>
-
-        <input type="submit" value="S'inscrire">
-    </form>
+            <!-- Champs du formulaire avec des étiquettes explicites -->
+            <label for="user_name">Nom d'utilisateur :</label>
+            <input type="text" name="user_name">
+            <br>
+            <label for="email">E-mail :</label>
+            <input type="email" name="email">
+            <br>
+            <label for="pwd">Mot de passe :</label>
+            <input type="password" name="pwd">
+            <br>
+            <!-- Champs d'adresse (ajoutés) -->
+            <label for="street_name">Street_name :</label>
+            <input type="text" name="street_name">
+            <br>
+            <label for="street_nb">Street_nb :</label>
+            <input type="text" name="street_nb">
+            <br>
+            <label for="city">City :</label>
+            <input type="text" name="city">
+            <br>
+            <label for="country">Country :</label>
+            <input type="text" name="country">
+            <br>
+            <input type="submit" value="S'inscrire">
+            <p>Vous êtes déjà membre ? <a href="login.php">Connectez-vous ici</a></p>
+        </form>
+    </div>
 </body>
 
 </html>

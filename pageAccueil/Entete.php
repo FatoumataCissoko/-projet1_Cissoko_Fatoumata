@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de fonctions
-include './functions/functions.php';
+//include './functions/functions.php';
 
 ?>
 
@@ -20,7 +20,7 @@ include './functions/functions.php';
 
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <a class="navbar-brand" href="#"><b><span class="firstWord">Chaussures</span></b><span class="secondWord"> WORKOUT IN STYLE</span></a>
+        <a class="navbar-brand" href=""><b><span class="firstWord">Chaussures</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

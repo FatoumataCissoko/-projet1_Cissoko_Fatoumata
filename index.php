@@ -61,5 +61,5 @@ include "pageAccueil/Entete.php";
 </main>
 
 <?php 
-include "./footer.php"; 
+include "./Pages/footer.php"; 
 ?>

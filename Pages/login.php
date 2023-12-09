@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $_SESSION['username'] = $username;
 
                             // Rediriger vers la page d'accueil ou autre page après la connexion réussie
-                            header('location: Entete.php');
+                            header('location: product.php');
                         } else {
                             $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
                         }
@@ -165,7 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <span><?php echo $password_err; ?></span>
 
             <div class="d-grid gap-2">
-                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous</button>
+                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="Product.php"></a></button>
+                    
             </div>
 
             <p><?php echo $login_err; ?></p>

@@ -13,7 +13,7 @@ if (!isset($_SESSION['id'])) {
 // Récupérer les informations du profil de l'utilisateur depuis la base de données
 $sql = 'SELECT id, username, email, nom, prenom, adresse FROM users WHERE id = ?';
 
-if ($stmt = mysqli_prepare($conn, $sql)) {
+if ($stmt = mysqli_prepare($databaseConnection, $sql)) {
     mysqli_stmt_bind_param($stmt, 'i', $param_id);
     $param_id = $_SESSION['id'];
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Mettre à jour les informations du profil dans la base de données
     $update_sql = 'UPDATE users SET nom = ?, prenom = ?, adresse = ? WHERE id = ?';
 
-    if ($update_stmt = mysqli_prepare($conn, $update_sql)) {
+    if ($update_stmt = mysqli_prepare($databaseConnection, $update_sql)) {
         mysqli_stmt_bind_param($update_stmt, 'sssi', $new_nom, $new_prenom, $new_adresse, $param_id);
 
         if (mysqli_stmt_execute($update_stmt)) {
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-mysqli_close($conn);
+mysqli_close($databaseConnection);
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +90,7 @@ mysqli_close($conn);
         <input type="submit" value="Mettre à jour le profil">
     </form>
 
-    <p><a href="logout.php">Se déconnecter</a></p>
+    <p><a href="./logout.php">Se déconnecter</a></p>
 </body>
 
 </html>

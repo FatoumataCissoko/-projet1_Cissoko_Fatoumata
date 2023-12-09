@@ -68,8 +68,8 @@ $databaseConnection = connectToDatabase();
 // Function getallproducts
 function getAllProducts()
 {
-    $conn = connectToDatabase(); 
-    $sql = "SELECT p.id, p.nom, p.description, p.prix, p.taille, p.quantite, i.chemin 
+    $conn = connectToDatabase();
+    $sql = "SELECT p.id, p.nom, p.description, p.prix, p.taille, p.quantity, i.chemin 
             FROM product p 
             JOIN Images i ON p.id = i.id_product; ";
     $stmt = $conn->prepare($sql);
@@ -81,6 +81,105 @@ function getAllProducts()
     }
     return $products;
 }
+
+function ajouterProduit($nom, $prix, $quantity, $description)
+{
+    $conn = connectToDatabase();
+
+    // Vérifiez la connexion à la base de données
+
+    $sql = 'INSERT INTO produits(nom, prix, quantity, description) VALUES (?, ?, ?, ?)';
+    $stmt = $conn->prepare($sql);
+
+    // Vérifiez la préparation de la requête
+    if (!$stmt) {
+        echo "Erreur de préparation de la requête: " . $conn->error;
+        return;
+    }
+
+    $stmt->bind_param('sdis', $nom, $prix, $quantity, $description);
+
+    $resultat = $stmt->execute();
+    $stmt->close();
+    $conn->close();
+
+    if ($resultat) {
+        header('Location: ./product.php');
+    } else {
+        echo "Erreur lors de l'ajout du produit";
+    }
+}
+
+function modifierProduit($id, $nom, $prix, $quantity, $description)
+{
+    $conn = connectToDatabase();
+    $sql = 'UPDATE produits set nom=?, prix=?,quantity=?,description=? where id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sdisi", $nom, $prix, $quantity, $description, $id);
+    $resultat = $stmt->execute();
+    if ($resultat) {
+        header('Location: ./product.php');
+    } else {
+        echo 'Une erreur lors de la modification';
+    }
+}
+
+function saveProduit($nom, $prix, $quantite, $description, $path)
+{
+    $conn = connectToDatabase();
+    $sql = "INSERT INTO product(nom,prix,quantity,description)
+    values(?,?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sdis", $nom, $prix, $quantity, $description);
+    $estSave = $stmt->execute();
+    if ($estSave) {
+        $id_produit = $conn->insert_id;
+        saveImage($path, $id_produit);
+    }
+}
+
+function deleteProduit($id_produit)
+{
+
+    $conn = connectToDatabase();
+    $sql = "DELETE from produits 
+    where id_produit=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_produit);
+    $estDelete = $stmt->execute();
+    header('Location: ./product.php');
+}
+
+function saveImage($path, $id_produit)
+{
+    $conn = connectToDatabase();
+    $sql = "INSERT INTO image(path,id_produit)
+    values(?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $path, $id_produit);
+    $estSave = $stmt->execute();
+    if ($estSave) {
+
+        header('Location: ./product.php');
+    }
+}
+
+function updateImage($id_produit, $image_destination)
+{
+    $conn = connectToDatabase();
+    $sql = "UPDATE image set path=?
+    where id_produit=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $image_destination, $id_produit);
+    $estUpdate = $stmt->execute();
+    if ($estUpdate) {
+        if (!empty($image_destination)) {
+            header('Location: ./product.php');
+        }
+    }
+}
+
+
 /*--------------------------------------------
 
 /**
@@ -160,11 +259,7 @@ function getAllUsers()
     return $data;
 }
 
-/**
- * Get user by id
- */
-
-//Todo: edit to prepare
+/*------------------------------------- Users ----------------------------------------------*/
 function getUserById(int $id)
 {
     global $conn;
@@ -207,9 +302,7 @@ function getUserByName(string $user_name)
     }
 }
 
-/**
- * Update user
- */
+
 function updateUser(array $data)
 {
     global $conn;
@@ -244,7 +337,3 @@ function validateUserName(string $user_name)
 
     return true;
 }
-
-?>
-
-
