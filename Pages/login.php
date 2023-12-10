@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Connexion</title>
     <style>
         body {
-            background-color: #f2f2f2;
+            background-color: #333;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <span><?php echo $password_err; ?></span>
 
             <div class="d-grid gap-2">
-                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="Product.php"></a></button>
+                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="product.php"></a></button>
                     
             </div>
 

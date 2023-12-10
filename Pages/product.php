@@ -1,6 +1,22 @@
-<?php 
-    include '../functions/functions.php'
-    ?>
+<?php
+session_start();
+
+include '../functions/functions.php';
+
+if (isset($_POST['add_to_cart'])) {
+    $productId = $_POST['product_id'];
+    addToCart($productId);
+    echo "Produit ajouté au panier!";
+}
+
+function addToCart($productId) {
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = array();
+    }
+    array_push($_SESSION['cart'], $productId);
+}
+
+?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -24,7 +40,7 @@
 
 
 
-  <a class="btn btn-primary" href="ajouterProduit.php" >Ajouter produit</a>
+  <a class="btn btn-primary" href="addProduit.php" >Ajouter produit</a>
 
   
 </div>
@@ -53,7 +69,7 @@
 
           <tr>
           <th scope="row"><?php  echo $i++;?></th>
-          <td><img src="<?php  echo $produit['path'];?>" height="150" width="150"></td>
+          <td><img src="../images/produits/ echo $product['id_produits']; ?>.jpg" height="150" width="150"></td>
           <td><?php echo $produit['nom'];?></td>
           <td><?php echo $produit['prix']; ?></td>
           <td><?php echo $produit['quantity']; ?></td> 

@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $street_name = test_input($_POST["street_name"]);
     $street_nb = test_input($_POST["street_nb"]);
     $city = test_input($_POST["city"]);
+    $country = test_input($_POST["country"]);
 
     // Si toutes les validations sont réussies, insérer les données dans la base de données
     if (empty($user_name_err) && empty($email_err) && empty($pwd_err)) {
@@ -44,8 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
 
         // Créer la requête SQL pour l'insertion
-        $query = "INSERT INTO `user` (`user_name`, `email`, `pwd`, `role_id`) 
-                  VALUES ('$user_name', '$email', '$hashed_pwd', (SELECT `id` FROM `role` WHERE `name` = 'client'))";
+        $query = "INSERT INTO `user` (`user_name`, `email`, `pwd`, `role_id`, `fname`, `lname`, `billing_address_id`, `shipping_address_id`, `token`) 
+                  VALUES ('$user_name', '$email', '$hashed_pwd', (SELECT `id` FROM `role` WHERE `name` = 'client'), '', '', 0, 0, '')";
 
         // Exécuter la requête
         if (mysqli_query($databaseConnection, $query)) {
@@ -73,13 +74,13 @@ mysqli_close($databaseConnection);
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
 
     <style>
         body {
-            background-color: #f2f2f2;
+            background-color: #333;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -148,8 +149,7 @@ mysqli_close($databaseConnection);
             text-decoration: underline;
         }
     </style>
-</head>
-
+    </head>
 <body>
     <div class="login-container">
         <h2>Inscription</h2>
@@ -158,30 +158,39 @@ mysqli_close($databaseConnection);
             <!-- Champs du formulaire avec des étiquettes explicites -->
             <label for="user_name">Nom d'utilisateur :</label>
             <input type="text" name="user_name">
+            <span><?php echo $user_name_err; ?></span>
             <br>
             <label for="email">E-mail :</label>
             <input type="email" name="email">
+            <span><?php echo $email_err; ?></span>
             <br>
             <label for="pwd">Mot de passe :</label>
             <input type="password" name="pwd">
+            <span><?php echo $pwd_err; ?></span>
             <br>
             <!-- Champs d'adresse (ajoutés) -->
             <label for="street_name">Street_name :</label>
             <input type="text" name="street_name">
+            <span><?php echo $street_name_err; ?></span>
             <br>
             <label for="street_nb">Street_nb :</label>
             <input type="text" name="street_nb">
+            <span><?php echo $street_nb_err; ?></span>
             <br>
             <label for="city">City :</label>
             <input type="text" name="city">
+            <span><?php echo $city_err; ?></span>
             <br>
             <label for="country">Country :</label>
             <input type="text" name="country">
+            <span><?php echo $country_err; ?></span>
             <br>
             <input type="submit" value="S'inscrire">
+            <a href="./login.php"></a>
             <p>Vous êtes déjà membre ? <a href="login.php">Connectez-vous ici</a></p>
         </form>
     </div>
 </body>
 
 </html>
+

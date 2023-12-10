@@ -66,29 +66,13 @@ $databaseConnection = connectToDatabase();
 
 
 // Function getallproducts
-function getAllProducts()
-{
-    $conn = connectToDatabase();
-    $sql = "SELECT p.id, p.nom, p.description, p.prix, p.taille, p.quantity, i.chemin 
-            FROM product p 
-            JOIN Images i ON p.id = i.id_product; ";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $resultats = $stmt->get_result();
-    $products = array();
-    foreach ($resultats as $product) {
-        $products[] = $product;
-    }
-    return $products;
-}
-
-function ajouterProduit($nom, $prix, $quantity, $description)
+function getAllProducts($nom, $prix, $quantity, $description, $imgPath)
 {
     $conn = connectToDatabase();
 
     // Vérifiez la connexion à la base de données
 
-    $sql = 'INSERT INTO produits(nom, prix, quantity, description) VALUES (?, ?, ?, ?)';
+    $sql = 'INSERT INTO product (name, price, quantity, description, img_url) VALUES (?, ?, ?, ?, ?)';
     $stmt = $conn->prepare($sql);
 
     // Vérifiez la préparation de la requête
@@ -97,7 +81,7 @@ function ajouterProduit($nom, $prix, $quantity, $description)
         return;
     }
 
-    $stmt->bind_param('sdis', $nom, $prix, $quantity, $description);
+    $stmt->bind_param('sdis', $nom, $prix, $quantity, $description, $imgPath);
 
     $resultat = $stmt->execute();
     $stmt->close();
@@ -110,10 +94,26 @@ function ajouterProduit($nom, $prix, $quantity, $description)
     }
 }
 
+function getProduitById($id){
+    $conn = connectToDatabase();
+
+    $sql = "SELECT p.id_product,p.nom,p.price,p.quantity,p.description,i.path
+    from produits p
+    join image i on i.id_product= p.id_product 
+    where p.id_product= ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i',$id);
+    $stmt->execute();
+
+    $resultats = $stmt->get_result();
+    $produit = $resultats->fetch_assoc();
+    return $produit;
+}
+
 function modifierProduit($id, $nom, $prix, $quantity, $description)
 {
     $conn = connectToDatabase();
-    $sql = 'UPDATE produits set nom=?, prix=?,quantity=?,description=? where id = ?';
+    $sql = 'UPDATE product set nom=?, price=?,quantity=?,description=? where id = ?';
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sdisi", $nom, $prix, $quantity, $description, $id);
     $resultat = $stmt->execute();
@@ -124,13 +124,13 @@ function modifierProduit($id, $nom, $prix, $quantity, $description)
     }
 }
 
-function saveProduit($nom, $prix, $quantite, $description, $path)
+function saveProduit($nom, $price, $quantity, $description, $path)
 {
     $conn = connectToDatabase();
-    $sql = "INSERT INTO product(nom,prix,quantity,description)
+    $sql = "INSERT INTO product(nom,price,quantity,description)
     values(?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sdis", $nom, $prix, $quantity, $description);
+    $stmt->bind_param("sdis", $nom, $price, $quantity, $description);
     $estSave = $stmt->execute();
     if ($estSave) {
         $id_produit = $conn->insert_id;
@@ -143,7 +143,7 @@ function deleteProduit($id_produit)
 
     $conn = connectToDatabase();
     $sql = "DELETE from produits 
-    where id_produit=?";
+    where id_product=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id_produit);
     $estDelete = $stmt->execute();
@@ -168,7 +168,7 @@ function updateImage($id_produit, $image_destination)
 {
     $conn = connectToDatabase();
     $sql = "UPDATE image set path=?
-    where id_produit=?";
+    where id_product=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $image_destination, $id_produit);
     $estUpdate = $stmt->execute();
@@ -336,4 +336,26 @@ function validateUserName(string $user_name)
     }
 
     return true;
+}
+/*-----------------------------------CartPay---------------------------------------------*/
+
+function addCart($id, $quantite, $ishome = true)
+{
+    $_SESSION['cart'][$id] = $quantite;
+    if ($ishome) {
+        header('Location: ./product.php');
+        exit();
+    } else {
+        header('Location: ./myCart.php');
+        exit();
+    }
+}
+function qteCart()
+{
+    $countElmnt = count($_SESSION['cart']);
+    return $countElmnt;
+}
+function getAllCart()
+{
+    return $_SESSION['cart'];
 }
