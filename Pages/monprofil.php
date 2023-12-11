@@ -11,7 +11,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 // Récupérer les informations du profil de l'utilisateur depuis la base de données
-$sql = 'SELECT id, username, email, nom, prenom, adresse FROM users WHERE id = ?';
+$sql = 'SELECT id, user_name, email, nom, prenom, adresse FROM user WHERE id = ?';
 
 if ($stmt = mysqli_prepare($databaseConnection, $sql)) {
     mysqli_stmt_bind_param($stmt, 'i', $param_id);

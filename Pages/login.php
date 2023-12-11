@@ -154,6 +154,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="login-container">
+
+    <a class="d-grid gap-2 col-6 mx-auto  mt-5 " href="../index.php">Accueil</a>
+
         <h2>Connexion</h2>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <label>Nom d'utilisateur:</label>
@@ -166,7 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="d-grid gap-2">
                     <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="product.php"></a></button>
-                    
             </div>
 
             <p><?php echo $login_err; ?></p>

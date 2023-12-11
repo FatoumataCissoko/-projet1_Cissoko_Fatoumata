@@ -1,7 +1,7 @@
 <?php
 
 //Function pour s'enregistrer
-function validateRegistration($username, $email, $password, $confirm_password,)
+function validateRegistration($username, $email, $password, $confirm_password, $city)
 {
     $errors = [];
 
@@ -31,9 +31,14 @@ function validateRegistration($username, $email, $password, $confirm_password,)
         $errors['email'] = "L'adresse e-mail n'est pas valide.";
     }
 
+    // Validation de la ville
+    if (empty($city)) {
+        $errors['city'] = "Veuillez saisir votre ville.";
+    }
 
     return $errors;
 }
+
 
 //Function pour ma BD
 function connectToDatabase()
@@ -84,6 +89,7 @@ function getAllProducts($nom, $prix, $quantity, $description, $imgPath)
     $stmt->bind_param('sdis', $nom, $prix, $quantity, $description, $imgPath);
 
     $resultat = $stmt->execute();
+    $resultats = $stmt->get_result();
     $stmt->close();
     $conn->close();
 
@@ -92,23 +98,46 @@ function getAllProducts($nom, $prix, $quantity, $description, $imgPath)
     } else {
         echo "Erreur lors de l'ajout du produit";
     }
+    foreach ($resultats as $produit) {
+        $produits[] = $produit;
+    }
+    return ($produits);
 }
 
-function getProduitById($id){
+function getProduitById($id)
+{
     $conn = connectToDatabase();
 
-    $sql = "SELECT p.id_product,p.nom,p.price,p.quantity,p.description,i.path
-    from produits p
-    join image i on i.id_product= p.id_product 
-    where p.id_product= ?";
+    if (!$conn) {
+        die("Erreur de connexion à la base de données.");
+    }
+
+    $sql = "SELECT p.id_product, p.nom, p.prix, p.quantite, p.description, i.path
+            FROM produits p
+            JOIN image i ON i.id_product = p.id_product
+            WHERE p.id_product = ?";
+
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i',$id);
-    $stmt->execute();
+
+    if (!$stmt) {
+        die("Erreur de préparation de la requête : " . $conn->error);
+    }
+
+    $stmt->bind_param('i', $id);
+
+    if (!$stmt->execute()) {
+        die("Erreur d'exécution de la requête : " . $stmt->error);
+    }
 
     $resultats = $stmt->get_result();
     $produit = $resultats->fetch_assoc();
+
+    $stmt->close();
+    $conn->close();
+
     return $produit;
 }
+
 
 function modifierProduit($id, $nom, $prix, $quantity, $description)
 {
@@ -124,13 +153,13 @@ function modifierProduit($id, $nom, $prix, $quantity, $description)
     }
 }
 
-function saveProduit($nom, $price, $quantity, $description, $path)
+function saveProduit($name, $price, $quantity, $description, $path)
 {
     $conn = connectToDatabase();
-    $sql = "INSERT INTO product(nom,price,quantity,description)
+    $sql = "INSERT INTO product(name,price,quantity,description)
     values(?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sdis", $nom, $price, $quantity, $description);
+    $stmt->bind_param("sdis", $name, $price, $quantity, $description);
     $estSave = $stmt->execute();
     if ($estSave) {
         $id_produit = $conn->insert_id;
@@ -142,7 +171,7 @@ function deleteProduit($id_produit)
 {
 
     $conn = connectToDatabase();
-    $sql = "DELETE from produits 
+    $sql = "DELETE from product 
     where id_product=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id_produit);
@@ -150,13 +179,13 @@ function deleteProduit($id_produit)
     header('Location: ./product.php');
 }
 
-function saveImage($path, $id_produit)
+function saveImage($path, $id_product)
 {
     $conn = connectToDatabase();
-    $sql = "INSERT INTO image(path,id_produit)
+    $sql = "INSERT INTO image(path,id_product)
     values(?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $path, $id_produit);
+    $stmt->bind_param("si", $path, $id_product);
     $estSave = $stmt->execute();
     if ($estSave) {
 
@@ -358,4 +387,19 @@ function qteCart()
 function getAllCart()
 {
     return $_SESSION['cart'];
+}
+/*-----------------------------------Panier--------------------------*/
+function countElementPanier()
+{
+    return count($_SESSION['panier']);
+}
+function getAllPanier()
+{
+    //$produits = array();
+    return $_SESSION['panier'];
+}
+function deleteElementPanier($id_product, $estAccueil = true)
+{
+    unset($_SESSION['panier']['$id_product']);
+    header("Location: ./panier.php");
 }
