@@ -288,7 +288,7 @@ function getAllUsers()
     return $data;
 }
 
-/*------------------------------------- Users ----------------------------------------------*/
+
 function getUserById(int $id)
 {
     global $conn;
@@ -375,7 +375,7 @@ function addCart($id, $quantite, $ishome = true)
         header('Location: ./product.php');
         exit();
     } else {
-        header('Location: ./myCart.php');
+        header('Location: ./cart.php');
         exit();
     }
 }
@@ -395,7 +395,6 @@ function countElementPanier()
 }
 function getAllPanier()
 {
-    //$produits = array();
     return $_SESSION['panier'];
 }
 function deleteElementPanier($id_product, $estAccueil = true)

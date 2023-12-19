@@ -21,7 +21,6 @@ $user_id = $_SESSION['user_id'];
 <head>
     <meta charset="UTF-8">
     <title>Changer le mot de passe</title>
-    <link rel="stylesheet" href="../../public/css/cursor.css">
     <style>
         body {
             font-family: Arial, sans-serif;

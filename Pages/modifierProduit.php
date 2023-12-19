@@ -80,7 +80,7 @@ else{
                 </div>
                 <div class="mb-3">
                     <label for="prix" class="form-label">Prix</label>
-                    <input type="text" value="<?php echo $produit['prix'] ;?>" class="form-control" name="prix">
+                    <input type="text" value="<?php echo $product['prix'] ;?>" class="form-control" name="prix">
                 </div>
 
                 <div class="form-floating">
@@ -92,7 +92,7 @@ else{
                 </div><br>
                 <div class="mb-3">
                     <label for="quantite" class="form-label">Quantite</label>
-                    <input type="number" value="<?php echo $produit['quantite'] ;?>" class="form-control"
+                    <input type="number" value="<?php echo $product['quantite'] ;?>" class="form-control"
                         name="quantite">
                 </div>
                 <div class="d-grid gap-2">

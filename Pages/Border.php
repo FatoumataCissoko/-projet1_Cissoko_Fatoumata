@@ -85,10 +85,10 @@ if ($user_role != 1) {
     <!-- Menu de navigation utilisant une liste non ordonnée -->
     <ul>
         <li><a href="../pageAccueil/Entete.php">Accueil</a></li>
-        <li><a href="product.php">Ajouter un produit</a></li>
-        <li><a href="manage_users.php">Liste des utilisateurs</a></li>
+        <li><a href="addProduit.php">Ajouter un produit</a></li>
+        <li><a href="adduser.php">Liste des utilisateurs</a></li>
         <li><a href="view_search_orders.php">Liste des commandes</a></li>
-        <li><a href="../pages/logout.php">Déconnexion</a></li>
+        <li><a href="logout.php">Déconnexion</a></li>
     </ul>
 
 </body>

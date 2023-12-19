@@ -1,6 +1,6 @@
 <?php
-//include "./public/header.php";
-include '../functions/functions.php'
+//include_once 'panier.php';
+include '../functions/functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,24 +49,24 @@ include '../functions/functions.php'
 
 
                     <?php
-                    if (isset($produits) && is_array($produits)) {
+                    if (isset($products) && is_array($products)) {
                         $i = 1;
-                        foreach ($produits as $produit) {
+                        foreach ($products as $product) {
                     ?>
                             <tr>
                                 <th scope="row"><?php echo $i++; ?></th>
-                                <td><img src="<?php echo $produit['path']; ?>" height="150" width="150"></td>
-                                <td><?php echo $produit['nom']; ?></td>
-                                <td><?php echo $produit['prix']; ?></td>
-                                <td><?php echo $produit['quantite']; ?></td>
-                                <td><?php echo $produit['description']; ?></td>
+                                <td><img src="<?php echo $product['path']; ?>" height="150" width="150"></td>
+                                <td><?php echo $product['nom']; ?></td>
+                                <td><?php echo $product['prix']; ?></td>
+                                <td><?php echo $product['quantite']; ?></td>
+                                <td><?php echo $product['description']; ?></td>
                                 <td>
                                     <div class="row">
                                         <div class="col-6">
-                                            <a href="modifierProduit.php?id=<?php echo $produit['id_produit']; ?>" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="modifierProduit.php?id=<?php echo $product['id_product']; ?>" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
                                         </div>
                                         <div class="col-6">
-                                            <a href="supprimerProduit.php?id=<?php echo $produit['id_produit']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                            <a href="supprimerProduit.php?id=<?php echo $product['id_product']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                         </div>
                                     </div>
                                 </td>

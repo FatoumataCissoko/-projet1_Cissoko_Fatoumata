@@ -1,13 +1,14 @@
 <?php 
-//include './public/header.php';
-$tabPanier = getAllPanier();
+session_start();
+include '../functions/functions.php';
+$panier = getAllPanier();
 if(isset($_POST['modifierPanier'])){
-    $id=$_POST['id_produit'];
+    $id=$_POST['id_product'];
     $qteS=$_POST['qteDemander'];
     getAllPanier($id,$qteS,false);
 }
 if(isset($_POST['supprimerPanier'])){
-    $id=$_POST[$id_produit];
+    $id=$_POST[$id_product];
     deleteElementPanier($id);
 }
 
@@ -38,12 +39,6 @@ if(isset($_POST['supprimerPanier'])){
             <div class=" contain m-5 ">
                 <h1>Panier</h1>
 
-
-
-
-
-
-
             </div>
             <div>
                 <table class="table table-striped">
@@ -68,17 +63,17 @@ if(isset($_POST['supprimerPanier'])){
     $total=0;
     $totalPanier=0;
     $quantiteDemander=1;
-     foreach($tabPanier as $id_produit=>$qte){
-        $produit=getProduitById($id_produit);
-        $total= $quantiteDemander *$produit['prix'];
+     foreach($panier as $id_product=>$qte){
+        $product=getProduitById($id_product);
+        $total= $quantiteDemander *$product['prix'];
         $totalPanier+=$total;
         ?>
 
                         <tr>
                             <th scope="row"><?php  echo $i++;?></th>
-                            <td><img src="<?php  echo $produit['path'];?>" height="150" width="150"></td>
-                            <td><?php echo $produit['nom'];?></td>
-                            <td><?php echo $produit['prix']; ?></td>
+                            <td><img src="<?php  echo $product['path'];?>" height="150" width="150"></td>
+                            <td><?php echo $product['nom'];?></td>
+                            <td><?php echo $product['prix']; ?></td>
                             <form method="post">
                                 <td><input type="number" min="1" max="50" name="qteDemander"
                                         value=" <?php echo $quantiteDemander ?>"></td>
@@ -86,7 +81,7 @@ if(isset($_POST['supprimerPanier'])){
                                 <td><?php echo $total; ?></td>
 
                                 <td>
-                                    <input type="hidden" name="id_produit" value="<?php echo $id_produit; ?>">
+                                    <input type="hidden" name="id_product" value="<?php echo $id_product; ?>">
                                     <div class="row">
                                         <div class="col-6">
                                             <button type="submit" name="modifierPanier" class="btn btn-info"><i
