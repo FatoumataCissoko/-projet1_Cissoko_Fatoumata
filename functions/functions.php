@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 //Function pour s'enregistrer
 function validateRegistration($username, $email, $password, $confirm_password, $city)
@@ -62,10 +65,6 @@ function connectToDatabase()
 
 // Exemple d'utilisation de la fonction
 $databaseConnection = connectToDatabase();
-
-// Maintenant, $databaseConnection est l'objet de connexion à la base de données que vous pouvez utiliser dans le reste de votre script.
-// Assurez-vous de fermer la connexion lorsque vous avez fini de l'utiliser.
-// $databaseConnection->close();
 
 //---------------------------------------Produits----------------------------------------------
 
@@ -142,8 +141,8 @@ function getProduitById($id)
         die("Erreur de connexion à la base de données.");
     }
 
-    $sql = "SELECT p.id_product, p.nom, p.prix, p.quantite, p.description, i.path
-            FROM produits p
+    $sql = "SELECT p.id_product, p.nom, p.price, p.quantity, p.description, i.path
+            FROM product 
             JOIN image i ON i.id_product = p.id_product
             WHERE p.id_product = ?";
 
@@ -192,12 +191,12 @@ function saveProduit($name, $price, $quantity, $description, $path)
     $stmt->bind_param("sdis", $name, $price, $quantity, $description);
     $estSave = $stmt->execute();
     if ($estSave) {
-        $id_produit = $conn->insert_id;
-        saveImage($path, $id_produit);
+        $id_product = $conn->insert_id;
+        saveImage($path, $id_product);
     }
 }
 
-function deleteProduit($id_produit)
+function deleteProduit($id_product)
 {
 
     $conn = connectToDatabase();
@@ -437,9 +436,6 @@ function deleteElementPanier($id_product, $estAccueil = true)
 // Fonction pour mettre à jour la quantité d'un produit dans le panier
 function updatePanier($idProduct, $quantity)
 {
-    // Démarrer ou récupérer la session
-    session_start();
-
     // Vérifier si le panier existe déjà dans la session
     if (isset($_SESSION['panier'])) {
         if (isset($_SESSION['panier'][$idProduct])) {
@@ -454,3 +450,4 @@ function updatePanier($idProduct, $quantity)
         );
     }
 }
+
