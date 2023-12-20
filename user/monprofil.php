@@ -68,7 +68,6 @@ mysqli_close($databaseConnection);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <!-- Ajoutez ici les liens vers les feuilles de style et les scripts nécessaires -->
 </head>
 
 <body>

@@ -17,14 +17,14 @@ include '../functions/functions.php';
     <title>Ajout</title>
 </head>
 
+
+<body style="background:green">
 <div>
             <!-- Formulaire de déconnexion -->
             <form action="../index.php" method="post">
                 <button type="submit" class="btn btn-danger mt-3">Se déconnecter</button>
             </form>
         </div>
-<body style="background:green">
-
     <div class="m-5">
         <h1 class="text-center">Gestion Produit</h1>
         <div class="d-grid gap-2 col-6 mx-auto mt-5 ">
