@@ -6,12 +6,12 @@ session_start();
 // Rediriger à la page de connexion si l'utilisateur n'est pas authentifié
 if (!isset($_SESSION['user_id'])) {
     // Rediriger à la page de connexion ou gérer l'accès non autorisé
-    header("Location: ../auth/login.php");
+    header("Location: ../Pages/login.php");
     exit();
 }
 
 // Récupérer la connexion à la base de données depuis la variable globale
-$conn = $GLOBALS['conn'];
+$conn = $GLOBALS['connexion'];
 
 // Obtenir l'ID de l'utilisateur
 $user_id = $_SESSION['user_id'];
@@ -34,7 +34,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     $country = $row['country'];
 } else {
     // Gérer le cas où l'information de l'adresse ne peut pas être obtenue
-    header("Location: failure.php?error=address");
+    header("Location: erreurCommand.php?error=address");
     exit();
 }
 
@@ -53,7 +53,7 @@ $result_insert_order = mysqli_query($conn, $sql_insert_order);
 
 if (!$result_insert_order) {
     // Gérer l'erreur lors de l'insertion dans la table user_order
-    header("Location: failure.php?error=order");
+    header("Location: erreurCommand.php?error=order");
     exit();
 }
 

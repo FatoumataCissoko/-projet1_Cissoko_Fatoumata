@@ -144,10 +144,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         a {
             color: #3498db;
             text-decoration: none;
+            background-color:#333;
         }
 
         a:hover {
             text-decoration: underline;
+            background-color: blue;
         }
     </style>
 </head>

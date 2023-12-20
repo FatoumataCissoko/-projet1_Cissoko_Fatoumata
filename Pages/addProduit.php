@@ -53,6 +53,12 @@ if (isset($_POST['ajouter'])) {
     </head>
     
     <body style="background:grey">
+    <div>
+                <!-- Formulaire de déconnexion -->
+                <form action="./product.php" method="post">
+                    <button type="submit" class="btn btn-danger mt-3">Retour a la gestion des produits</button>
+                </form>
+            </div>
 <main>
     <div class="containt mt-5 mt-5">
         

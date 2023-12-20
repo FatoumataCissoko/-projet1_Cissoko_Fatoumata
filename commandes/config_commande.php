@@ -3,7 +3,9 @@
 include('../functions/functions.php');
 
 // Démarrer la session
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
 if (!isset($_SESSION['user_id'])) {
@@ -11,8 +13,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if (!isset($conn['connexion'])) {
+    die("Erreur: La connexion à la base de données n'est pas définie. Vérifiez votre configuration.");
+}
+
 // Récupérer la connexion à la base de données depuis la variable globale
-$conn = $GLOBALS['conn'];
+$conn = $GLOBALS['connexion'];
 
 // Récupérer les informations de l'utilisateur
 $user_id = $_SESSION['user_id'];
@@ -55,6 +61,7 @@ foreach ($cart_products as $product) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmer la Commande</title>
     <style>
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -96,7 +103,7 @@ foreach ($cart_products as $product) {
         button:hover {
             background-color: #0056b3;
         }
-    </style>
+    </style>    
 </head>
 
 <body>

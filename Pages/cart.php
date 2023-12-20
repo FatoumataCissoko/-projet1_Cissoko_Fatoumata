@@ -32,7 +32,7 @@ if (isset($_GET['action'])) {
         case 'update':
             // Mettre à jour la quantité d'un article dans le panier
             if (isset($_POST['quantity'])) {
-                $newQuantity = max(0, (int)$_POST['quantity']);  
+                $newQuantity = max(3, (int)$_POST['quantity']);  
                 $_SESSION['cart'][$productId] = $newQuantity;
             }
             break;

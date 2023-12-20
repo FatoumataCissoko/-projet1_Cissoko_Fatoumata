@@ -6,7 +6,7 @@ include '../functions/functions.php';
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="public/style.css">
@@ -19,22 +19,22 @@ include '../functions/functions.php';
 
 
 <body style="background:green">
-<div>
-            <!-- Formulaire de déconnexion -->
-            <form action="../index.php" method="post">
-                <button type="submit" class="btn btn-danger mt-3">Se déconnecter</button>
-            </form>
-        </div>
+    <div>
+        <!-- Formulaire de déconnexion -->
+        <form action="../index.php" method="post">
+            <button type="submit" class="btn btn-danger mt-3">Se déconnecter</button>
+        </form>
+    </div>
     <div class="m-5">
         <h1 class="text-center">Gestion Produit</h1>
         <div class="d-grid gap-2 col-6 mx-auto mt-5 ">
             <a class="btn btn-primary" href="./addProduit.php">Ajouter produit</a>
             <a class="btn btn-success" href="./panier.php">
-                <i class="bi bi-basket"></i> Panier
+                <i class="bi bi-cart"></i> Panier
             </a>
         </div>
-        
-             
+
+
         <div>
             <table class="table table-striped">
                 <thead>
@@ -66,12 +66,13 @@ include '../functions/functions.php';
                                 <td><?php echo $product['description']; ?></td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-6">
-                                            <a href="modifierProduit.php?id=<?php echo $product['id']; ?>" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="supprimerProduit.php?id=<?php echo $product['id']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
-                                        </div>
+                                        <!-- Formulaire pour ajouter le produit au panier -->
+                                        <form action="./panier.php" method="post">
+                                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                            <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
+                                            <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+                                            <button type="submit" name="add_to_cart">Ajout au Panier</button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

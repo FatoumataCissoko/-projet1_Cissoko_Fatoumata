@@ -44,6 +44,14 @@ function validateRegistration($username, $email, $password, $confirm_password, $
 
 
 //Function pour ma BD
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Variable globale pour stocker la connexion
+$conn = [];
+
+// Fonction pour la connexion à la base de données
 function connectToDatabase()
 {
     // Paramètres de connexion à la base de données
@@ -53,14 +61,14 @@ function connectToDatabase()
     $DB_NAME = "ecom1_project";
 
     // Connexion à la base de données
-    $conn = new mysqli($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
+    $conn['connexion'] = new mysqli($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 
     // Vérifier la connexion
-    if ($conn->connect_error) {
-        die("Échec de la connexion à la base de données : " . $conn->connect_error);
+    if ($conn['connexion']->connect_error) {
+        die("Échec de la connexion à la base de données : " . $conn['connexion']->connect_error);
     }
 
-    return $conn;
+    return $conn['connexion'];
 }
 
 // Exemple d'utilisation de la fonction

@@ -148,10 +148,12 @@ mysqli_close($databaseConnection);
         a {
             color: #3498db;
             text-decoration: none;
+            background-color: #333;
         }
 
         a:hover {
             text-decoration: underline;
+            
         }
     </style>
 </head>
