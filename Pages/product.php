@@ -1,12 +1,12 @@
 <?php
-//include_once 'panier.php';
 include '../functions/functions.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="public/style.css">
@@ -17,22 +17,26 @@ include '../functions/functions.php';
     <title>Ajout</title>
 </head>
 
+<div>
+            <!-- Formulaire de déconnexion -->
+            <form action="../index.php" method="post">
+                <button type="submit" class="btn btn-danger mt-3">Se déconnecter</button>
+            </form>
+        </div>
 <body style="background:green">
 
-
-    <div class=" m-5 ">
-        <h1 class="text-center  ">Gestion Produit</h1>
-        <div class="d-grid gap-2 col-6 mx-auto  mt-5 ">
-
-
-
+    <div class="m-5">
+        <h1 class="text-center">Gestion Produit</h1>
+        <div class="d-grid gap-2 col-6 mx-auto mt-5 ">
             <a class="btn btn-primary" href="./addProduit.php">Ajouter produit</a>
-
-
+            <a class="btn btn-success" href="./panier.php">
+                <i class="bi bi-basket"></i> Panier
+            </a>
         </div>
+        
+             
         <div>
             <table class="table table-striped">
-
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -42,31 +46,31 @@ include '../functions/functions.php';
                         <th scope="col">Quantite</th>
                         <th scope="col">Description</th>
                         <th scope="col">Action</th>
-
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
 
-
                     <?php
+                    $products = getProduits();
+
                     if (isset($products) && is_array($products)) {
                         $i = 1;
                         foreach ($products as $product) {
                     ?>
                             <tr>
                                 <th scope="row"><?php echo $i++; ?></th>
-                                <td><img src="<?php echo $product['path']; ?>" height="150" width="150"></td>
-                                <td><?php echo $product['nom']; ?></td>
-                                <td><?php echo $product['prix']; ?></td>
-                                <td><?php echo $product['quantite']; ?></td>
+                                <td><img src="../<?php echo $product['img_url']; ?>" height="150" width="150" alt="<?php echo $product['img_url']; ?>"></td>
+                                <td><?php echo $product['name']; ?></td>
+                                <td><?php echo $product['price']; ?></td>
+                                <td><?php echo $product['quantity']; ?></td>
                                 <td><?php echo $product['description']; ?></td>
                                 <td>
                                     <div class="row">
                                         <div class="col-6">
-                                            <a href="modifierProduit.php?id=<?php echo $product['id_product']; ?>" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="modifierProduit.php?id=<?php echo $product['id']; ?>" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
                                         </div>
                                         <div class="col-6">
-                                            <a href="supprimerProduit.php?id=<?php echo $product['id_product']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                            <a href="supprimerProduit.php?id=<?php echo $product['id']; ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                         </div>
                                     </div>
                                 </td>
@@ -74,12 +78,13 @@ include '../functions/functions.php';
                     <?php
                         }
                     } else {
-                        // Gérer le cas où $produits n'est pas défini ou n'est pas un tableau
                         echo "Aucun produit disponible.";
                     }
                     ?>
-
                 </tbody>
             </table>
         </div>
     </div>
+</body>
+
+</html>

@@ -4,60 +4,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Success</title>
-    <link rel="stylesheet" href="../../public/css/cursor.css">
+    <title>Commandes</title>
     <style>
-        body {
+         body {
+            background-color: #333;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        header {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px;
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
             text-align: center;
         }
 
-        main {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        h2 {
+            color: #3498db;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        span {
+            color: #e74c3c;
+            display: block;
+            margin-top: 5px;
         }
 
         p {
-            margin-bottom: 15px;
+            margin-top: 10px;
+            color: #333;
         }
 
         a {
-            display: inline-block;
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 15px;
+            color: #3498db;
             text-decoration: none;
-            border-radius: 4px;
         }
 
         a:hover {
-            background-color: #0056b3;
-        }
+            text-decoration: underline;
+        };
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Order Success</h1>
+        <h1>Commander avec Success</h1>
     </header>
 
     <main>
-        <p>Your order was successful! Thank you for shopping with us.</p>
-        <p>You will receive an email confirmation shortly.</p>
-        <a href="../index.php">Return to Home</a>
+    <p> commande a bien fonctionné ! Merci d’avoir magasiné avec nous.</p>
+        <p>Vous recevrez un e-mail de confirmation sous peut de temps.</p>
+        <a href="../index.php">Retour à la page d’accueil</a>
     </main>
 
 </body>

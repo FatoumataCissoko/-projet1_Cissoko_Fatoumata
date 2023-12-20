@@ -1,9 +1,54 @@
-<?php
-// Inclusion du fichier d'en-tête
-include "pageAccueil/Entete.php";
-?>
+<!DOCTYPE html>
+<html lang="en">
 
-<main>
+<head>
+<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Vente De Chaussures</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333; /* Couleur de fond gris foncé */
+            overflow: hidden;
+        }
+
+        .nav {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav:hover {
+            background-color: #ddd; /* Changement de couleur au survol */
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="nav"><a href="./index.php">Home</a></div>
+        <div class="nav"><a href="./Pages/login.php">Sign Up</a></div>
+        <div class="nav"><a href="./Pages/inscription.php">Login</a></div>
+    </div>
+
+    <main>
     <!-- Section de la bannière -->
     <section class="banner">
         <h2><span class="secondWord" style="font-size: larger;">Chaussures Fashion</span></h2>
@@ -12,7 +57,7 @@ include "pageAccueil/Entete.php";
 
     <!-- Image d'accueil -->
     <div class="welcomeImg">
-        <img src="images/site/mag3.png" alt="chaussures" class="img-fluid">
+        <img src="./images/site/mag3.png" alt="chaussures" class="img-fluid">
     </div>
 
     <!-- Paragraphes aléatoires sur les chaussures -->
@@ -59,7 +104,9 @@ include "pageAccueil/Entete.php";
         </div>
     </div>
 </main>
-
+</body>
 <?php 
-include "./Pages/footer.php"; 
+include './Pages/footer.php'
 ?>
+</html>
+

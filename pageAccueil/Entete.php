@@ -2,67 +2,71 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="cache-control" content="no-cache">
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
-    <link rel="stylesheet" href="css/style.css">
-    <title>Vente De Chaussures</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            color: #ff9900;
+        }
+
+        #logo img {
+            max-width: 80px;
+            height: auto;
+            border-radius: 50px;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <?php if (isset($_SESSION['user'])) {
-                    $user_prenom = $_SESSION['user_prenom'];
-                    $user_nom = $_SESSION['user_nom']; ?>
-                    <li class="nav-item">
-                        <a class="btn btn-info" style="font-weight: bold;">Bienvenue <span class="btn btn-warning" style="color:white; font-weight: bold;"><?php echo $user_prenom . " (" . $utilisateur_nom . ")"; ?>
-                            </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Boutique</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="monprofil.php">Mon Profil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="myCart.php" class="btn btn-primary">
-                            Panier <span class="badge text-bg-danger">
-                                <?php echo $quantity; ?>
-                            </span>
-                        </a>
-                    </li>
-                    <?php if ($_SESSION['roleU'] == "client") { ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="../Pages/addProduit.php">Gérer les Produits</a></li>
-                                <li><a class="dropdown-item" href="../Pages/adduser.php">Utilisateurs</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="../Pages/product.php">Commandes</a></li>
-                            </ul>
-                        </li>
-                    <?php } ?>
-                <?php } else { ?>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./Pages/login.php">Se connecter</a>
-                    </li>
-                <?php } ?>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.php">Home</a></li>
+                <li><a href="../Pages/inscription.php">Register</a></li>
+                <li><a href="../Pages/login.php">Login</a></li>
+                <li><a href="../Authentification/profil.php">Profile</a></li>
+                <li> <a href="../Pages/cart.php">Cart</a></li>
             </ul>
-        </div>
-    </nav>
-</header>
-
+        </nav>
+        
+    </header>
 </body>
 
 </html>

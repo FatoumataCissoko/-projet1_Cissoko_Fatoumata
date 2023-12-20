@@ -98,11 +98,41 @@ function getAllProducts($nom, $prix, $quantity, $description, $imgPath)
     } else {
         echo "Erreur lors de l'ajout du produit";
     }
-    foreach ($resultats as $produit) {
-        $produits[] = $produit;
+    foreach ($resultats as $product) {
+        $products[] = $product;
     }
-    return ($produits);
+    return ($products);
 }
+
+function getProduits()
+{
+    $conn = connectToDatabase();
+
+    if (!$conn) {
+        die("Erreur de connexion à la base de données.");
+    }
+
+    $sql = "SELECT * FROM product";
+
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        die("Erreur de préparation de la requête : " . $conn->error);
+    }
+
+    if (!$stmt->execute()) {
+        die("Erreur d'exécution de la requête : " . $stmt->error);
+    }
+
+    $resultats = $stmt->get_result();
+    $produits = $resultats->fetch_all(MYSQLI_ASSOC);
+
+    $stmt->close();
+    $conn->close();
+
+    return $produits;
+}
+
 
 function getProduitById($id)
 {
@@ -208,7 +238,6 @@ function updateImage($id_produit, $image_destination)
     }
 }
 
-
 /*--------------------------------------------
 
 /**
@@ -227,7 +256,8 @@ function createUser(array $data)
         mysqli_stmt_bind_param(
             $stmt,
             "ssssssssi",
-            $data['user_name'],
+            $data['user_id'],
+            $data['username'],
             $data['email'],
             $data['pwd'],
             $data['fname'],
@@ -399,6 +429,28 @@ function getAllPanier()
 }
 function deleteElementPanier($id_product, $estAccueil = true)
 {
-    unset($_SESSION['panier']['$id_product']);
+    unset($_SESSION['panier'][$id_product]);
     header("Location: ./panier.php");
+}
+
+
+// Fonction pour mettre à jour la quantité d'un produit dans le panier
+function updatePanier($idProduct, $quantity)
+{
+    // Démarrer ou récupérer la session
+    session_start();
+
+    // Vérifier si le panier existe déjà dans la session
+    if (isset($_SESSION['panier'])) {
+        if (isset($_SESSION['panier'][$idProduct])) {
+            $_SESSION['panier'][$idProduct] = $quantity;
+        } else {
+            // Si le produit n'est pas encore dans le panier, l'ajouter
+            $_SESSION['panier'][$idProduct] = $quantity;
+        }
+    } else {
+        $_SESSION['panier'] = array(
+            $idProduct => $quantity
+        );
+    }
 }

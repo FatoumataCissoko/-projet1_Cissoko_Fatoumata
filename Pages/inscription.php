@@ -52,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Exécuter la requête
         if (mysqli_query($databaseConnection, $query)) {
+            header('Location: login.php');
+            exit;
             echo "Inscription réussie!";
         } else {
             echo "Erreur d'inscription: " . mysqli_error($databaseConnection);

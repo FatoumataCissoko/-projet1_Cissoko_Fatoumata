@@ -1,6 +1,6 @@
 <?php
 // Inclure la configuration de la base de données
-include('../../config/database.php');
+include('../functions/functions.php');
 session_start();
 
 // Rediriger à la page de connexion si l'utilisateur n'est pas authentifié
