@@ -86,7 +86,7 @@ $user_id = $_SESSION['user_id'];
 
 <body>
     <h2>Changer le mot de passe</h2>
-    <form action="process_change_password.php" method="post">
+    <form action="changer_mdp.php" method="post">
         <label for="current_password">Mot de passe actuel :</label>
         <input type="password" name="current_password" required>
         <br>
@@ -97,7 +97,7 @@ $user_id = $_SESSION['user_id'];
         <input type="password" name="confirm_new_password" required>
         <br>
         <input type="submit" value="Changer le mot de passe">
-        <a href="../pageAccueil/Entete.php">Accueil</a>
+        <a href="../index.php">Accueil</a>
         <?php
         // Afficher les messages d'erreur s'ils existent
         if (isset($_GET['error'])) {

@@ -9,7 +9,7 @@
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
-    <title></title>
+    <title>fOOTER</title>
 </head>
 <body>
     <!-- Remove the container if you want to extend the Footer to full width. -->
@@ -30,12 +30,10 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 class="text-uppercase mb-4 font-weight-bold">
-              Company name
+              VENTE DES CHAUSSURES
             </h6>
             <p>
-              Here you can use rows and columns to organize your footer
-              content. Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit.
+            « Donne à une fille les bonnes chaussures et elle pourra conquérir le monde. » Marilyn Monroe
             </p>
           </div>
           <!-- Grid column -->
@@ -46,16 +44,13 @@
           <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
             <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
             <p>
-              <a class="text-white">MDBootstrap</a>
+              <a class="text-white">BASKETS</a>
             </p>
             <p>
-              <a class="text-white">MDWordPress</a>
+              <a class="text-white">ESCARPINS</a>
             </p>
             <p>
-              <a class="text-white">BrandFlow</a>
-            </p>
-            <p>
-              <a class="text-white">Bootstrap Angular</a>
+              <a class="text-white">BOTTES</a>
             </p>
           </div>
           <!-- Grid column -->
@@ -68,7 +63,7 @@
           <!-- Grid column -->
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+            <p><i class="fas fa-home mr-3"></i> CANADA, QC 10012, CA</p>
             <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
             <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
             <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
@@ -85,7 +80,7 @@
                style="background-color: #3b5998"
                href="#!"
                role="button"
-               ><i class="fab fa-facebook-f"></i
+               ><i class="fab fa-facebook-f">Facebook</i
               ></a>
 
             <!-- Twitter -->
@@ -94,7 +89,7 @@
                style="background-color: #55acee"
                href="#!"
                role="button"
-               ><i class="fab fa-twitter"></i
+               ><i class="fab fa-twitter">Twitter</i
               ></a>
 
             <!-- Google -->
@@ -103,7 +98,7 @@
                style="background-color: #dd4b39"
                href="#!"
                role="button"
-               ><i class="fab fa-google"></i
+               ><i class="fab fa-google">Google</i
               ></a>
 
             <!-- Instagram -->
@@ -112,7 +107,7 @@
                style="background-color: #ac2bac"
                href="#!"
                role="button"
-               ><i class="fab fa-instagram"></i
+               ><i class="fab fa-instagram">Instagram</i
               ></a>
 
             <!-- Linkedin -->
@@ -121,7 +116,7 @@
                style="background-color: #0082ca"
                href="#!"
                role="button"
-               ><i class="fab fa-linkedin-in"></i
+               ><i class="fab fa-linkedin-in">Linkedin</i
               ></a>
             <!-- Github -->
             <a
@@ -129,7 +124,7 @@
                style="background-color: #333333"
                href="#!"
                role="button"
-               ><i class="fab fa-github"></i
+               ><i class="fab fa-github">Github</i
               ></a>
           </div>
         </div>
@@ -144,7 +139,7 @@
          class="text-center p-3"
          style="background-color: rgba(0, 0, 0, 0.2)"
          >
-      © 2020 Copyright:
+      © 2023 Copyright:
       <a class="text-white" href="https://mdbootstrap.com/"
          >MDBootstrap.com</a
         >

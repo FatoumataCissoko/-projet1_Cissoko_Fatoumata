@@ -29,13 +29,13 @@ if (isset($_GET['user_id'])) {
     $delete_query = "DELETE FROM `user` WHERE `id` = $user_id";
     
     // Exécuter la requête de suppression
-    $result = mysqli_query($conn, $delete_query);
+    $result = mysqli_query($databaseConnection, $delete_query);
 
     // Vérifier si la suppression a réussi
     if ($result) {
         header("Location: Border.php");
     } else {
-        echo "Erreur lors de la suppression de l'utilisateur : " . mysqli_error($conn);
+        echo "Erreur lors de la suppression de l'utilisateur : " . mysqli_error($databaseConnection);
     }
 
     // Fermer la connexion à la base de données

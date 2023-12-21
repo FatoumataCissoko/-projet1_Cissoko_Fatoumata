@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 17 nov. 2023 à 20:30
+-- Généré le : jeu. 21 déc. 2023 à 05:36
 -- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Version de PHP : 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,8 +62,19 @@ CREATE TABLE `product` (
   `quantity` int(11) NOT NULL,
   `price` decimal(5,2) NOT NULL,
   `img_url` varchar(255) NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `img_path` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `quantity`, `price`, `img_url`, `description`, `img_path`) VALUES
+(1, 'product1', 60, 20.99, 'images/produits/ch1.jpg', 'Description product1', ''),
+(2, 'product2', 40, 39.55, 'images/produits/ch2.jpg', 'Description product2', ''),
+(3, 'product3', 20, 40.20, 'images/produits/ch3.jpg', 'Description product3', ''),
+(4, 'product4', 20, 55.00, 'images/produits/ch4.jpg', 'Description product4', '');
 
 -- --------------------------------------------------------
 
@@ -76,6 +87,15 @@ CREATE TABLE `role` (
   `name` varchar(10) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `role`
+--
+
+INSERT INTO `role` (`id`, `name`, `description`) VALUES
+(1, 'superadmin', 'Super Administrator'),
+(2, 'admin', 'admin'),
+(3, 'client', 'client');
 
 -- --------------------------------------------------------
 
@@ -95,6 +115,22 @@ CREATE TABLE `user` (
   `token` varchar(255) NOT NULL,
   `role_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `user_name`, `email`, `pwd`, `fname`, `lname`, `billing_address_id`, `shipping_address_id`, `token`, `role_id`) VALUES
+(12, 'cissoko', 'djeme@123.com', '$2y$10$F73SglDORPUnL9Bn9hsO3OaVDoCyMM.sqML0/xJ0mT3cPrde8zPqi', 'fatou', 'kourouma', 0, 0, '', 2),
+(13, 'fanta', 'fanta@123.com', '$2y$10$ySHcUkKJ2fqvNMUXthk3uez2J2kCt6G3VNFp/X3OB4tW66aA5l0V6', '', '', 0, 0, '', 2),
+(42, 'binta', 'binta@test.com', '$2y$10$IJDaQqPheyyPdcgrPpNjSe1gfXCyF2PK1qMWGdLFWU/kLTLgkrlSu', '', '', 0, 0, '', 2),
+(47, 'saran', 'saran@123.com', '$2y$10$UgFbRLzeR9vZQBFucnv.H.pwuICHvUEtwJglGQORCHtZXYklZT6MC', '', '', 0, 0, '', 2),
+(48, 'Aya', 'aya@gmail.com', '$2y$10$0lcCZ9mZWich0ygR7OENR.i1cJuxnLT.Mu3SmN/qD77yYmAGCgTqe', '', '', 0, 0, '', 3),
+(50, 'user', 'test@test.ca', '$2y$10$q1NPF6wAZZiSvJNGRECIzeBYaPLGedAOx0M0cSKy4swFCXyaZ/p32', '', '', 0, 0, '', 1),
+(52, 'fayel', 'fayel@test.com', '$2y$10$IQfkdKTPGcOqXw4H2Wzh8./PTwvE3jY05TBljwtMyH9j7/tVtBz..', '', '', 0, 0, '', 3),
+(53, 'Edy', 'test@test.ca', '$2y$10$ZiqM6iSxrlJiBmze4rZbTexQhfPAi0Yd1sZKdHcsDCLkbyLGbFDF2', '', '', 0, 0, '', 3),
+(57, 'admin', 'admin@gmail.com', '$2y$10$omzLC2lwNnxa1r8fsQem0.4zm1C0WYFCnR8vxGurwrQUAwFPMswjO', '', '', 0, 0, '', 3),
+(59, 'client', 'client@gmail.com', '$2y$10$0eDzKZ9o.M3XIUIfDTDR0.69WlW8mxKij8HMl/qDc4WAflYzjHNP6', '', '', 0, 0, '', 3);
 
 -- --------------------------------------------------------
 
@@ -168,19 +204,19 @@ ALTER TABLE `address`
 -- AUTO_INCREMENT pour la table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT pour la table `user_order`
@@ -196,20 +232,20 @@ ALTER TABLE `user_order`
 -- Contraintes pour la table `order_has_product`
 --
 ALTER TABLE `order_has_product`
-  ADD CONSTRAINT `order_id` FOREIGN KEY (`order_id`) REFERENCES `user_order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_order_id` FOREIGN KEY (`order_id`) REFERENCES `user_order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `user_order`
 --
 ALTER TABLE `user_order`
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

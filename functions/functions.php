@@ -403,6 +403,52 @@ function validateUserName(string $user_name)
 
     return true;
 }
+
+
+// Fonction pour obtenir le rôle de l'utilisateur
+function getUserRole($username)
+{
+    // Assurez-vous d'avoir une connexion à la base de données ici
+    $conn = connectToDatabase();
+
+    // Requête SQL pour récupérer le rôle de l'utilisateur en fonction du nom d'utilisateur
+    $sql = "SELECT role FROM user WHERE user_name = ?";
+
+    // Préparation de la requête
+    $stmt = $conn->prepare($sql);
+
+    // Vérification de la préparation de la requête
+    if (!$stmt) {
+        die("Erreur de préparation de la requête: " . $conn->error);
+    }
+
+    // Liaison des paramètres
+    $stmt->bind_param('s', $username);
+
+    // Exécution de la requête
+    if (!$stmt->execute()) {
+        die("Erreur d'exécution de la requête : " . $stmt->error);
+    }
+
+    // Liaison des résultats
+    $stmt->bind_result($role);
+
+    // Récupération du résultat
+    if ($stmt->fetch()) {
+        // Retourner le rôle
+        return $role;
+    } else {
+        // Gérer le cas où l'utilisateur n'a pas de rôle défini
+        return "Role non défini";
+    }
+
+    // Fermeture de la déclaration
+    $stmt->close();
+
+    // Fermeture de la connexion
+    $conn->close();
+}
+
 /*-----------------------------------CartPay---------------------------------------------*/
 
 function addCart($id, $quantite, $ishome = true)

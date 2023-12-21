@@ -1,49 +1,69 @@
 <?php
 // Inclure la configuration de la base de données
 include('../functions/functions.php');
+session_start();
 
-// Démarrer la session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../Pages/login.php");
-    exit();
+// Vérifiez si la clé "connexion" est définie dans le tableau global
+if (!isset($GLOBALS['connexion'])) {
+    // Assurez-vous d'avoir une connexion à la base de données valide ici
+    // Remplacez les valeurs de connexion par celles de votre configuration
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "ecom1_project";
+
+    // Créez une connexion à la base de données
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Vérifiez si la connexion a réussi
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Affectez la connexion à la variable globale
+    $GLOBALS['connexion'] = $conn;
 }
 
-if (!isset($conn['connexion'])) {
-    die("Erreur: La connexion à la base de données n'est pas définie. Vérifiez votre configuration.");
+// Rediriger à la page de connexion si l'utilisateur n'est pas authentifié
+if (!isset($_SESSION['user_id'])) {
+    // Rediriger à la page de connexion ou gérer l'accès non autorisé
+    header("Location: ../Pages/login.php");
+    exit();
 }
 
 // Récupérer la connexion à la base de données depuis la variable globale
 $conn = $GLOBALS['connexion'];
 
-// Récupérer les informations de l'utilisateur
+// Obtenir l'ID de l'utilisateur
 $user_id = $_SESSION['user_id'];
 
-// Récupérer les informations de l'adresse de livraison depuis la base de données
-$sql = "SELECT u.*, a.*
-        FROM `user` u
+// Obtenir les informations de l'adresse de livraison depuis la base de données
+$sql = "SELECT u.*, a.* FROM `user` u
         JOIN `address` a ON u.shipping_address_id = a.id
         WHERE u.id = $user_id";
 $result = mysqli_query($conn, $sql);
 
-// Vérifier si la requête a réussi et que les informations de l'utilisateur sont disponibles
 if ($result && mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
 
-    // Récupérer les informations de l'adresse de livraison
+    // Obtenir les informations de l'adresse de livraison
     $street_name = $row['street_name'];
     $street_nb = $row['street_nb'];
     $city = $row['city'];
     $province = $row['province'];
     $zip_code = $row['zip_code'];
     $country = $row['country'];
+} else {
+    // Gérer le cas où l'information de l'adresse est correcte
+    header("Location: succes.php?error=address");
+    exit();
 }
 
-// Récupérer les produits du panier
+// Obtenir les produits du panier
 $cart_products = $_SESSION['cart'];
 
 // Calculer le prix total en fonction des produits dans le panier
@@ -51,7 +71,58 @@ $total_price = 0;
 foreach ($cart_products as $product) {
     $total_price += $product['quantity'] * $product['price'];
 }
+
+// Générer une référence de commande unique (vous devez mettre en place votre propre logique ici)
+$order_reference = generateOrderReference();
+
+// Insérer dans la table user_order
+$sql_insert_order = "INSERT INTO `user_order` (`ref`, `date`, `total`, `user_id`) VALUES ('$order_reference', NOW(), $total_price, $user_id)";
+$result_insert_order = mysqli_query($conn, $sql_insert_order);
+
+if (!$result_insert_order) {
+    // Gérer l'erreur lors de l'insertion dans la table user_order
+    header("Location: erreurCommand.php?error=order");
+    exit();
+}
+
+// Obtenir l'ID de la commande pour une utilisation ultérieure
+$order_id = mysqli_insert_id($conn);
+
+// Insérer les produits dans la table order_product
+foreach ($cart_products as $product) {
+    $product_id = $product['id'];
+    $quantity = $product['quantity'];
+    $price = $product['price'];
+
+    $sql_insert_order_product = "INSERT INTO `order_product` (`order_id`, `product_id`, `quantity`, `price`) VALUES ($order_id, $product_id, $quantity, $price)";
+    $result_insert_order_product = mysqli_query($conn, $sql_insert_order_product);
+
+    if (!$result_insert_order_product) {
+        // Gérer l'erreur lors de l'insertion dans la table order_product
+        header("Location: erreurCommand.php?error=order_product");
+        exit();
+    }
+}
+
+// Nettoyer les variables de session
+unset($_SESSION['cart']);
+
+// Rediriger à la page de succès
+header("Location: success.php");
+exit();
+
+// Fonction pour générer une référence de commande unique
+function generateOrderReference() {
+    // Générer une partie aléatoire (6 caractères)
+    $randomPart = bin2hex(random_bytes(3)); 
+    // Concaténer la partie aléatoire avec le timestamp actuel
+    $orderReference = 'REF' . time() . strtoupper($randomPart);
+
+    return $orderReference;
+}
+$GLOBALS['connexion']->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

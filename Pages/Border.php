@@ -5,7 +5,7 @@ session_start();
 // Vérifier si l'utilisateur est authentifié
 if (!isset($_SESSION['user_id'])) {
     // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
-    header("Location: login.php");
+    header("Location: addProduit.php");
     exit();
 }
 
@@ -15,7 +15,7 @@ $user_role = $_SESSION['user_role'];
 // Vérifier si l'utilisateur a le rôle d'administrateur
 if ($user_role != 1) {
     // Rediriger vers la page d'accueil si l'utilisateur n'est pas un administrateur
-    header("Location: ../index.php");
+    header("Location: ./index.php");
     exit();
 }
 
@@ -85,9 +85,8 @@ if ($user_role != 1) {
     <!-- Menu de navigation utilisant une liste non ordonnée -->
     <ul>
         <li><a href="../pageAccueil/Entete.php">Accueil</a></li>
-        <li><a href="addProduit.php">Ajouter un produit</a></li>
+        <li><a href="./addProduit.php">Ajouter un produit</a></li>
         <li><a href="adduser.php">Liste des utilisateurs</a></li>
-        <li><a href="view_search_orders.php">Liste des commandes</a></li>
         <li><a href="logout.php">Déconnexion</a></li>
     </ul>
 

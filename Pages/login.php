@@ -1,76 +1,83 @@
 <?php
 // Inclure le fichier de connexion à la base de données
 include('../functions/functions.php');
+
 // Initialiser les variables
 $username = $password = '';
 $username_err = $password_err = $login_err = '';
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     // Valider le nom d'utilisateur
-    if (empty(trim($_POST['username']))) {
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    if (empty($username)) {
         $username_err = 'Veuillez entrer votre nom d\'utilisateur.';
-    } else {
-        $username = trim($_POST['username']);
     }
 
     // Valider le mot de passe
-    if (empty(trim($_POST['password']))) {
+    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    if (empty($password)) {
         $password_err = 'Veuillez entrer votre mot de passe.';
-    } else {
-        $password = trim($_POST['password']);
     }
+
     // Vérifier s'il n'y a pas d'erreurs avant de tenter la connexion
     if (empty($username_err) && empty($password_err)) {
         // Préparer la requête de sélection
         $sql = "SELECT `id`, `user_name`, `pwd` FROM user WHERE `user_name` = ?";
+        $stmt = mysqli_prepare($databaseConnection, $sql);
 
-        if ($stmt = mysqli_prepare($databaseConnection, $sql)) {
-            var_dump($_POST);
+        // Vérifier la préparation de la requête
+        if (!$stmt) {
+            die("Erreur de préparation de la requête: " . mysqli_error($databaseConnection));
+        }
 
-            mysqli_stmt_bind_param($stmt, 's', $username);
-            var_dump($stmt);
-            // Exécuter la requête préparée
-            if (mysqli_stmt_execute($stmt)) {
-                // Stocker le résultat
-                mysqli_stmt_store_result($stmt);
-                var_dump($stmt);
-                // Vérifier si le nom d'utilisateur existe, puis vérifier le mot de passe
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    var_dump($stmt);
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if (mysqli_stmt_fetch($stmt)) {
-                        if (password_verify($password, $hashed_password)) {
-                            // Authentification réussie, démarrer une nouvelle session
-                            session_start();
+        mysqli_stmt_bind_param($stmt, 's', $username);
 
-                            // Stocker les données dans les variables de session
-                            $_SESSION['id'] = $id;
-                            $_SESSION['username'] = $username;
+        // Exécuter la requête préparée
+        if (mysqli_stmt_execute($stmt)) {
+            // Stocker le résultat
+            mysqli_stmt_store_result($stmt);
 
-                            // Rediriger vers la page d'accueil ou autre page après la connexion réussie
-                            header('location: product.php');
-                        } else {
-                            $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
-                        }
+            // Vérifier si le nom d'utilisateur existe, puis vérifier le mot de passe
+            if (mysqli_stmt_num_rows($stmt) == 1) {
+                mysqli_stmt_bind_result($stmt, $user_id, $db_username, $db_password);
+                if (mysqli_stmt_fetch($stmt)) {
+                    if (password_verify($password, $db_password)) {
+                        // Authentification réussie, démarrer une nouvelle session
+                        session_start();
+
+                        // Stocker les données dans les variables de session
+                        $_SESSION['user_id'] = $user_id;
+                        $_SESSION['username'] = $db_username;
+
+                        // Rediriger vers la page appropriée
+                        header("Location: ../Pages/product.php");
+                        exit();
+                    } else {
+                        $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
                     }
-                } else {
-                    $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
                 }
             } else {
-                echo 'Erreur! Veuillez réessayer plus tard.';
+                $login_err = 'Nom d\'utilisateur ou mot de passe incorrect.';
             }
-
-            // Fermer la déclaration
-            mysqli_stmt_close($stmt);
+        } else {
+            echo 'Erreur! Veuillez réessayer plus tard.';
         }
-    }
 
-    // Fermer la connexion
-    mysqli_close($databaseConnection);
+        // Fermer la déclaration
+        mysqli_stmt_close($stmt);
+    } else {
+        // Gérer les erreurs
+        $login_err = 'Identifiants invalides. Veuillez réessayer.';
+    }
 }
+
+// Fermer la connexion
+mysqli_close($databaseConnection);
 ?>
+
+<!-- Le reste du code HTML de votre page de connexion -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -144,7 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         a {
             color: #3498db;
             text-decoration: none;
-            background-color:#333;
         }
 
         a:hover {
@@ -157,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
 
-    <a class="d-grid gap-2 col-6 mx-auto  mt-5 " href="../index.php">Accueil</a>
+        <a class="d-grid gap-2 col-6 mx-auto  mt-5 " href="../index.php">Accueil</a>
 
         <h2>Connexion</h2>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
@@ -170,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <span><?php echo $password_err; ?></span>
 
             <div class="d-grid gap-2">
-                    <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="product.php"></a></button>
+                <button type="submit" name="connexion" class="btn btn-primary">Connectez-Vous <a href="product.php"></a></button>
             </div>
 
             <p><?php echo $login_err; ?></p>

@@ -13,4 +13,18 @@ if (isset($_SESSION['user'])) {
     // Si l'utilisateur n'est pas connecté, redirigez également vers la page d'accueil
     header('Location: ./index.php');
 }
+
+
+
+
+
+if (isset($_POST['logout'])) {
+   // Détruire toutes les données de session
+   session_unset();
+   session_destroy();
+   
+   // Rediriger vers la page de connexion
+   header("Location: ./Pages/login.php");
+   exit();
+}
 ?>
